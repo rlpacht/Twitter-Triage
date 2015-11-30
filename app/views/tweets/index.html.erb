@@ -1,0 +1,66 @@
+<table class="table">
+  <thead class="table-row">
+    <tr>
+      <th>
+        Text
+      </th>
+      <th>
+        Link to Tweet
+      </th>
+      <th>
+        Retweet Count
+      </th>
+      <th>
+        Created On
+      </th>
+      <th>
+        Reject
+      </th>
+      <th>
+        Mark as Done
+      </th>
+      <th>
+        Save
+      </th>
+    </tr>
+  </thead>
+  <% @tweets.each do |tweet| %>
+    <tr class="table-row">
+      <td class="tweet-text">
+        <%= tweet.tweet_text %>
+      </td>
+      <td class="tweet-link">
+        <%=link_to "Link", tweet.source_url, :target => "_blank" %>
+      </td>
+      <td class="tweet-retweet-count">
+        <%= tweet.retweet_count %>
+      </td>
+      <td class="tweet-date">
+        <%= tweet.tweet_date %>
+      </td>
+      <td class="reject-tweet">
+        <%= button_to "Update", { action: "update" }%>
+
+        <!-- <button class="btn btn-danger">
+          Reject
+        </button> -->
+      </td>
+      <td class="tweet-done">
+        <%= button_to %>
+          Complete
+        <% end %>
+        <button class="btn btn-primary">
+          Complete
+        </button>
+      </td>
+      <td class="tweet-saved">
+        <%= button_to %>
+        Favorite
+        <% end %>
+        <button class="btn btn-success">
+          Favorite
+        </button>
+      </td>
+    </tr>
+  <% end %>
+</table>
