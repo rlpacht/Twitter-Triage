@@ -13,16 +13,16 @@ OpenSSL::SSL::VERIFY_PEER = OpenSSL::SSL::VERIFY_NONE
 class TweetsController < ApplicationController
   def index
     # client = Google::APIClient.new
-    @session = GoogleDrive.saved_session("./stored_token.json", nil, "683200892791-8m30lam17uijblqsrjeovj7o03a95i26", "ysAf0-OnpFop4RdQ3eo0Zwgk")
+    @session = GoogleDrive.saved_session("./stored_token.json", nil, ENV["google_id"], ENV["google_secret"])
 
     folder = @session.collection_by_title("fake_data")
     spreadsheets = folder.spreadsheets
 
     twitter_client = Twitter::REST::Client.new do |config|
-      config.consumer_key        = "BMrfGU77tdpO8ShsO6alnnTbs"
-      config.consumer_secret     = "kt7ZEe45lQxMBGJMVlONcrUHthuQtUHUOlOYHwPLhpK8gr9vUW"
-      config.access_token        = "711951421-qcGd19poM1IVUO2ZBHwQxakgmlvTXCphouoYjrOP"
-      config.access_token_secret = "4bojDnF33AZPUkg6yMlcwGpZObl8IzszjdTToGP032bhe"
+      config.consumer_key        = ENV["twitter_key"]
+      config.consumer_secret     = ENV["twitter_secret"]
+      config.access_token        = ENV["twitter_access_token"]
+      config.access_token_secret = ENV["twitter_access_token_secret"]
     end
 
     twitter_data = get_twitter_data_from_spreadsheets(twitter_client, spreadsheets)

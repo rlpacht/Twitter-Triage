@@ -29,6 +29,8 @@ gem 'google_drive' ,'1.0'
 gem 'twitter', '5.15'
 
 gem 'httparty'
+
+gem "figaro"
 # gem 'google-drive'
 # Use ActiveModel has_secure_password
 # gem 'bcrypt', '~> 3.1.7'
