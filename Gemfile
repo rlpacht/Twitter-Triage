@@ -50,3 +50,7 @@ group :development, :test do
   gem 'spring'
 end
 
+gem 'rails_12factor', group: :production
+
+ruby "2.2.1"
+

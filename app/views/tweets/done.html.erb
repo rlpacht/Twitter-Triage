@@ -2,10 +2,13 @@
   <%= button_to "View Rejected Tweets", { action: "rejected"}, {:method => :get, class: "view-rejected btn btn-danger"}%>
 </span>
 <span class="nav-buttons">
-  <%= button_to "View Completed Tweets", { action: "done"}, {:method => :get, class: "view-completed btn btn-primary"}%>
+  <%= button_to "View Completed Tweets", { action: "done"}, {:method => :get, class: "view-completed btn btn-primary", :disabled => true}%>
 </span>
 <span class="nav-buttons">
   <%= button_to "View Saved Tweets", { action: "favorited"}, {:method => :get, class: "view-saved btn btn-success"}%>
+</span>
+<span class="nav-buttons">
+  <%= button_to "View Pending Tweets", { action: "index"}, {:method => :get, class: "view-tweets btn btn-info"}%>
 </span>
 
 <table class="table">
@@ -29,15 +32,6 @@
       <th>
         Created On
       </th>
-      <th>
-        Reject
-      </th>
-      <th>
-        Mark as Completed
-      </th>
-      <th>
-        Save
-      </th>
     </tr>
   </thead>
   <% @tweets.each do |tweet| %>
@@ -59,15 +53,6 @@
       </td>
       <td class="tweet-date">
         <%= tweet.format_date %>
-      </td>
-      <td class="reject-tweet">
-        <%= button_to "Reject", { action: "mark_rejected", id: tweet.id }, {class: "btn btn-danger"}%>
-      </td>
-      <td class="tweet-done">
-        <%= button_to "Complete", { action: "mark_done", id: tweet.id }, {class: "btn btn-primary"}%>
-      </td>
-      <td class="tweet-saved">
-        <%= button_to "Save", { action: "mark_favorited", id: tweet.id }, {class: "btn btn-success"}%>
       </td>
     </tr>
   <% end %>
