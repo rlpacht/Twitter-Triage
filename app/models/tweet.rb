@@ -1,13 +1,23 @@
+require 'time'
+
 class Tweet < ActiveRecord::Base
   def source_url
     "http://twitter.com/#{user}/status/#{twitter_id}"
   end
 
-  def format_date
+  # def formatted_date
+  #   t = tweet_date
+  #   p "T #{t}"
+  #   binding.pry
+  #   "#{t.month}/#{t.day}/#{t.year} at #{t.hour}:#{padded_minutes(t.min)}"
+  # end
+
+  def formatted_date
     date = tweet_date
+    "DATE #{date}"
     date = date.split(" ")
-    time = format_time(date[3])
-    date = date[0..2].join(" ")
+    time = format_time(date[1])
+    date = date[0]
     return "#{date} at #{time}"
   end
 
@@ -16,8 +26,8 @@ class Tweet < ActiveRecord::Base
     time = time.map do |item|
       item.to_i
     end
-    if time[0] == 24
-      time[0] = time[0] / 2
+    if time[0] == 24 ||time[0] == 12
+      time[0] = 12
     elsif time[0] != 12
       time[0] = time[0] % 12
     end
@@ -27,6 +37,41 @@ class Tweet < ActiveRecord::Base
     time = time[0..1].join(":")
     return time
   end
+
+  private
+
+  def padded_minutes(minutes)
+    if minutes < 10
+      return "0#{minutes}"
+    else
+      return minutes
+    end
+  end
+
+  # def format_date
+  #   date = tweet_date
+  #   date = date.split(" ")
+  #   time = format_time(date[3])
+  #   date = date[0..2].join(" ")
+  #   return "#{date} at #{time}"
+  # end
+
+  # def format_time(time)
+  #   time = time.split(":")
+  #   time = time.map do |item|
+  #     item.to_i
+  #   end
+  #   if time[0] == 24
+  #     time[0] = time[0] / 2
+  #   elsif time[0] != 12
+  #     time[0] = time[0] % 12
+  #   end
+  #   if time[1] % 10 == time[1]
+  #     time[1] = "0#{time[1]}"
+  #   end
+  #   time = time[0..1].join(":")
+  #   return time
+  # end
 
   def self.pending
     return Tweet.where({
@@ -60,10 +105,14 @@ class Tweet < ActiveRecord::Base
           twitter_id: tweet_data[:id_str],
           tweet_text: tweet_data[:text],
           tweet_date: tweet_data[:created_at],
+          # tweet_date: Time.parse(tweet_data[:created_at]),
+          tweet_date: tweet_data[:created_at],
           retweet_count: tweet_data[:retweet_count],
           user: tweet_data[:user][:screen_name],
           users_followers: tweet_data[:user][:followers_count]
         })
+      else
+        Blacklist.create({tweet_id: tweet_data[:id_str]})
       end
     end
   end

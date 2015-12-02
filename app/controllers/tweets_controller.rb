@@ -67,7 +67,7 @@ class TweetsController < ApplicationController
     start_index = 0
     end_index = 100
     twitter_data = []
-    new_ids = ids - Tweet.pluck(:twitter_id)
+    new_ids = ids - Tweet.pluck(:twitter_id) - Blacklist.pluck(:tweet_id)
     while start_index < new_ids.length
       bucket_of_ids = new_ids[start_index...end_index]
       twitter_data.concat(fetch_tweets_bucket(twitter_client, bucket_of_ids))

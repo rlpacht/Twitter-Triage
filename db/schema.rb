@@ -11,10 +11,17 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20151129182809) do
+ActiveRecord::Schema.define(version: 20151202190529) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
+
+  create_table "blacklists", force: :cascade do |t|
+    t.string   "tweet_id"
+    t.string   "string"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+  end
 
   create_table "spreadsheets", force: :cascade do |t|
     t.string   "id_str"

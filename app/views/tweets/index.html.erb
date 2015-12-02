@@ -58,7 +58,7 @@
         <%= tweet.retweet_count %>
       </td>
       <td class="tweet-date">
-        <%= tweet.format_date %>
+        <%= tweet.formatted_date %>
       </td>
       <td class="reject-tweet">
         <%= button_to "Reject", { action: "mark_rejected", id: tweet.id }, {class: "btn btn-danger"}%>
