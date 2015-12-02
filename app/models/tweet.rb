@@ -17,7 +17,7 @@ class Tweet < ActiveRecord::Base
     p "DATE #{date}"
     date = date.split(" ")
     time = format_time(date[3])
-    date = date[0]
+    date = date[0..2].join(" ")
     return "#{date} at #{time}"
   end
 
