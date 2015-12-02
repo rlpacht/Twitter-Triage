@@ -14,7 +14,7 @@ class Tweet < ActiveRecord::Base
 
   def formatted_date
     date = tweet_date
-    "DATE #{date}"
+    p "DATE #{date}"
     date = date.split(" ")
     time = format_time(date[1])
     date = date[0]
@@ -26,7 +26,8 @@ class Tweet < ActiveRecord::Base
     time = time.map do |item|
       item.to_i
     end
-    if time[0] == 24 ||time[0] == 12
+    p "TIME #{time}"
+    if time[0] == 24 || time[0] == 12 || time[0] == 0
       time[0] = 12
     elsif time[0] != 12
       time[0] = time[0] % 12
