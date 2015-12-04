@@ -11,21 +11,13 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20151202190529) do
+ActiveRecord::Schema.define(version: 20151203031009) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
 
   create_table "blacklists", force: :cascade do |t|
     t.string   "tweet_id"
-    t.string   "string"
-    t.datetime "created_at", null: false
-    t.datetime "updated_at", null: false
-  end
-
-  create_table "spreadsheets", force: :cascade do |t|
-    t.string   "id_str"
-    t.string   "text"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
   end
@@ -33,8 +25,6 @@ ActiveRecord::Schema.define(version: 20151202190529) do
   create_table "tweets", force: :cascade do |t|
     t.string   "twitter_id"
     t.string   "tweet_text"
-    t.string   "tweet_date"
-    t.string   "tweet_time"
     t.integer  "retweet_count"
     t.datetime "created_at",                       null: false
     t.datetime "updated_at",                       null: false
@@ -45,6 +35,7 @@ ActiveRecord::Schema.define(version: 20151202190529) do
     t.boolean  "rejected",         default: false
     t.boolean  "done",             default: false
     t.boolean  "favorited",        default: false
+    t.datetime "tweet_date"
   end
 
 end

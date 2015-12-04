@@ -14,8 +14,10 @@ class TweetsController < ApplicationController
   def index
     # client = Google::APIClient.new
     @session = GoogleDrive.saved_session("./stored_token.json", nil, ENV["google_id"], ENV["google_secret"])
+    # @session = GoogleDrive.saved_session("./stored_token.json", nil, "650842291969-dejntreh6e5q3027jq1tj78j2jj2c05q.apps.googleusercontent.com", "gIn4Ds4jxCczSwbTnwT92v9z")
 
     folder = @session.collection_by_title("fake_data")
+    # folder = @session.collection_by_title("twitter_test")
     spreadsheets = folder.spreadsheets
 
     twitter_client = Twitter::REST::Client.new do |config|
@@ -28,8 +30,7 @@ class TweetsController < ApplicationController
     twitter_data = get_twitter_data_from_spreadsheets(twitter_client, spreadsheets)
 
     Tweet.add_tweets_to_db(twitter_data)
-    # @tweets = Tweet.pending.order(users_followers: :desc)
-    @tweets = Tweet.pending
+    @tweets = Tweet.pending.order(tweet_date: :desc)
     render :index
   end
 
