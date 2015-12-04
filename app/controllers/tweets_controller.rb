@@ -9,7 +9,7 @@ require 'net/http'
 require 'twitter/headers'
 require "json"
 OpenSSL::SSL::VERIFY_PEER = OpenSSL::SSL::VERIFY_NONE
-
+#
 class TweetsController < ApplicationController
   def index
     # client = Google::APIClient.new
