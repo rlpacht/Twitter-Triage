@@ -7,8 +7,9 @@ class Tweet < ActiveRecord::Base
 
   def formatted_date
     t = tweet_date
-    p "T #{t}"
-    "#{t.month}/#{t.day}/#{t.year} at #{t.hour}:#{padded_minutes(t.min)}"
+    p "THE DATE #{t}"
+    # "#{t.month}/#{t.day}/#{t.year} at #{t.hour}:#{padded_minutes(t.min)}"
+    return t
   end
 
   private
