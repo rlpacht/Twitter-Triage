@@ -76,12 +76,16 @@ class TweetsController < ApplicationController
     start_index = 0
     end_index = 100
     twitter_data = []
+    # twitter will not let you make more than 15 requests every fifteen minutes
+    # the counter is to prevent it from breaking
+    counter = 0
     new_ids = ids - Tweet.pluck(:twitter_id) - Blacklist.pluck(:tweet_id)
-    while start_index < new_ids.length
+    while start_index < new_ids.length && counter < 15
       bucket_of_ids = new_ids[start_index...end_index]
       twitter_data.concat(fetch_tweets_bucket(twitter_client, bucket_of_ids))
       start_index += 100
       end_index += 100
+      counter += 1
     end
 
     return twitter_data
