@@ -5,7 +5,8 @@
   <%= button_to "View Completed Tweets", { action: "done"}, {:method => :get, class: "view-completed btn btn-primary"}%>
 </span>
 <span class="nav-buttons">
-  <%= button_to "View Saved Tweets", { action: "favorited"}, {:method => :get, class: "view-saved btn btn-success", :disabled => true}%>
+  <%= button_to "View Saved Tweets", { action: "favorited"}, {:method => :get, class: "view-saved btn btn-success",
+    :disabled => true}%>
 </span>
 <span class="nav-buttons">
   <%= button_to "View Pending Tweets", { action: "index"}, {:method => :get, class: "view-tweets btn btn-info"}%>
@@ -53,7 +54,7 @@
         <%= tweet.retweet_count %>
       </td>
       <td class="tweet-date">
-        <%= tweet.format_date %>
+        <%= tweet.formatted_date %>
       </td>
     </tr>
   <% end %>

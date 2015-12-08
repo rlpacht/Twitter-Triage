@@ -22,46 +22,14 @@
   margin-bottom: .5%;
 }
 
-.view-rejected, .view-completed, .view-saved, .view-tweets {
-  /*display: block;*/
-  /*position: relative;*/
-  /*left:20%;*/
-  /*float: right;*/
-  /*margin-left: 20%;*/
-}
-
-.table, th, tr {
+table {
   text-align: center;
-
 }
 
-table, th, tr, td {
-  border: 1.5px solid black;
-}
-
-.table-row {
+td, th, tr {
+  border: 1px solid black;
 }
 
 .tweet-text {
-  width: 40%;
-  padding: 1%;
   text-align: justify;
-}
-
-.tweet-link {
-}
-
-.tweet-retweet-count {
-}
-
-.tweet-date {
-}
-
-.reject-tweet {
-}
-
-.tweet-done {
-}
-
-.tweet-saved {
 }

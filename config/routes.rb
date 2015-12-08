@@ -1,6 +1,8 @@
 Rails.application.routes.draw do
   get "/", to: "tweets#index"
 
+  get "tweets/fetch_tweets", to: "tweets#fetch_tweets"
+
   get "tweets/rejected", to: "tweets#rejected"
 
   post "tweets/reject", to: "tweets#mark_rejected"

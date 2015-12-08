@@ -7,6 +7,13 @@
 <span class="nav-buttons">
   <%= button_to "View Saved Tweets", { action: "favorited"}, {:method => :get, class: "view-saved btn btn-success"}%>
 </span>
+<span class="nav-buttons">
+  <%= button_to "View Pending Tweets", { action: "index"}, {:method => :get, class: "view-tweets btn btn-info",
+    :disabled => true}%>
+</span>
+<span class="nav-buttons">
+  <%= button_to "Fetch new tweets", { action: "fetch_tweets"}, {:method => :get, class: "view-tweets btn btn-info"}%>
+</span>
 
 <table class="table">
   <thead class="table-row">
