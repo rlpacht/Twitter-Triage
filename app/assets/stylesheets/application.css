@@ -15,6 +15,9 @@
  *= require_self
  */
 
+body, html {
+  max-width: 100%;
+}
 .nav-buttons {
   display: inline-flex;
   margin-left: .5%;
@@ -23,13 +26,21 @@
 }
 
 table {
+  max-width: 10%;
   text-align: center;
+  /*table-layout: fixed;*/
 }
 
 td, th, tr {
+  text-align: center;
   border: 1px solid black;
 }
 
 .tweet-text {
   text-align: justify;
+  width: 50%;
+}
+
+.tweet-link {
+  /*max-width: 20%;*/
 }

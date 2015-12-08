@@ -15,6 +15,9 @@
   <thead class="table-row">
     <tr>
       <th>
+        #
+      </th>
+      <th>
         Text
       </th>
       <th>
@@ -34,8 +37,11 @@
       </th>
     </tr>
   </thead>
-  <% @tweets.each do |tweet| %>
+  <% @tweets.each_with_index do |tweet, index| %>
     <tr class="table-row">
+      <td>
+        <%= index + 1 %>
+      </td>
       <td class="tweet-text">
         <%= tweet.tweet_text %>
       </td>
