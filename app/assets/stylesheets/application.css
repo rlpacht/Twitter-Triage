@@ -34,6 +34,11 @@ table {
 td, th, tr {
   text-align: center;
   border: 1px solid black;
+  /*font-size: 12px;*/
+}
+
+td .btn {
+  font-size: 10px;
 }
 
 .tweet-text {
@@ -42,5 +47,6 @@ td, th, tr {
 }
 
 .tweet-link {
+  text-align: justify;
   /*max-width: 20%;*/
 }

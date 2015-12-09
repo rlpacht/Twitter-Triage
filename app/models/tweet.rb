@@ -1,6 +1,11 @@
 require 'time'
 
 class Tweet < ActiveRecord::Base
+
+  def user_source
+    "http://twitter.com/#{user}"
+  end
+
   def source_url
     "http://twitter.com/#{user}/status/#{twitter_id}"
   end

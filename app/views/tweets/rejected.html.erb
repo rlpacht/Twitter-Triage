@@ -15,13 +15,7 @@
   <thead class="table-row">
     <tr>
       <th>
-        #
-      </th>
-      <th>
         Text
-      </th>
-      <th>
-        Link to Tweet
       </th>
       <th>
         User
@@ -39,17 +33,11 @@
   </thead>
   <% @tweets.each_with_index do |tweet, index| %>
     <tr class="table-row">
-      <td>
-        <%= index + 1 %>
-      </td>
-      <td class="tweet-text">
-        <%= tweet.tweet_text %>
-      </td>
       <td class="tweet-link">
-        <%=link_to "Link", tweet.source_url, :target => "_blank" %>
+        <%=link_to tweet.tweet_text, tweet.source_url, :target => "_blank" %>
       </td>
       <td class="tweet-user-data">
-        <%= tweet.user %>
+        <%=link_to tweet.user, tweet.user_source, :target => "_blank" %>
       </td>
       <td class="tweet-user-followers">
         <%= tweet.users_followers %>

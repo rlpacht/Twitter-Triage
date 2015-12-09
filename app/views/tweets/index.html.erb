@@ -19,13 +19,7 @@
   <thead class="table-row">
     <tr>
       <th>
-        #
-      </th>
-      <th>
         Text
-      </th>
-      <th>
-        Link to Tweet
       </th>
       <th>
         User
@@ -40,49 +34,30 @@
         Created On
       </th>
       <th>
-        Reject
-      </th>
-      <th>
-        Mark as Completed
-      </th>
-      <th>
-        Save
+        Triage
       </th>
     </tr>
   </thead>
   <% @tweets.each_with_index do |tweet, index| %>
     <tr class="table-row">
-      <td>
-        <%= index + 1 %>
-      </td>
-      <td class="tweet-text">
-        <%= tweet.tweet_text %>
-      </td>
       <td class="tweet-link">
-        <%=link_to "Link", tweet.source_url, :target => "_blank" %>
+        <%=link_to tweet.tweet_text, tweet.source_url, :target => "_blank" %>
       </td>
       <td class="tweet-user-data">
-        <%= tweet.user %>
+        <%=link_to tweet.user, tweet.user_source, :target => "_blank" %>
       </td>
       <td class="tweet-user-followers">
-        <%= tweet.users_followers %>
+        <%= number_with_delimiter(tweet.users_followers, :delimiter => ',') %>
       </td>
       <td class="tweet-retweet-count">
-        <%= tweet.retweet_count %>
+        <%= number_with_delimiter(tweet.retweet_count, :delimiter => ',') %>
       </td>
       <td class="tweet-date">
         <%= tweet.formatted_date %>
       </td>
-      <td class="reject-tweet">
+      <td class="buttons">
         <%= button_to "Reject", { action: "mark_rejected", id: tweet.id }, {class: "btn btn-danger"}%>
-        <!-- <button class="reject-button btn btn-danger" data-id=<%=tweet.twitter_id%> >
-          <%=tweet.twitter_id%>
-        </button> -->
-      </td>
-      <td class="tweet-done">
         <%= button_to "Complete", { action: "mark_done", id: tweet.id }, {class: "btn btn-primary"}%>
-      </td>
-      <td class="tweet-saved">
         <%= button_to "Save", { action: "mark_favorited", id: tweet.id }, {class: "btn btn-success"}%>
       </td>
     </tr>
