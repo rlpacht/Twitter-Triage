@@ -12,11 +12,11 @@ OpenSSL::SSL::VERIFY_PEER = OpenSSL::SSL::VERIFY_NONE
 #
 class TweetsController < ApplicationController
   def index
-    @tweets = Tweet.pending.order(tweet_date: :desc).limit(3000)
-    render :index
-  end
+    # @tweets = Tweet.pending.order(tweet_date: :desc).limit(3000)
+    # render :index
+  # end
 
-  def fetch_tweets
+  # def fetch_tweets
     # client = Google::APIClient.new
     @session = GoogleDrive.saved_session("./stored_token.json", nil, ENV["google_id"], ENV["google_secret"])
     # @session = GoogleDrive.saved_session("./stored_token.json", nil, "650842291969-dejntreh6e5q3027jq1tj78j2jj2c05q.apps.googleusercontent.com", "gIn4Ds4jxCczSwbTnwT92v9z")
@@ -35,7 +35,9 @@ class TweetsController < ApplicationController
     twitter_data = get_twitter_data_from_spreadsheets(twitter_client, spreadsheets)
 
     Tweet.add_tweets_to_db(twitter_data)
-    redirect_to "/"
+    # redirect_to "/"
+    @tweets = Tweet.pending.order(tweet_date: :desc).limit(3000)
+    render :index
   end
 
   def rejected
