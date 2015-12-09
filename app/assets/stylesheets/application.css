@@ -16,8 +16,10 @@
  */
 
 body, html {
-  max-width: 100%;
+  max-width: 98%;
+  padding: 0px;
 }
+
 .nav-buttons {
   display: inline-flex;
   margin-left: .5%;
@@ -28,25 +30,45 @@ body, html {
 table {
   max-width: 10%;
   text-align: center;
+  padding: 0px;
   /*table-layout: fixed;*/
 }
+
+.table {
+  padding: 0px;
+}
+
 
 td, th, tr {
   text-align: center;
   border: 1px solid black;
+  padding: 0px;
+
   /*font-size: 12px;*/
 }
 
-td .btn {
-  font-size: 10px;
+tr:hover td {
+  background:#EEE
 }
 
-.tweet-text {
+td .btn {
   text-align: justify;
-  width: 50%;
+  font-size: 10px;
+  max-width: 80%;
+
+}
+
+.tweet-user-data {
+  padding: 4px;
+}
+
+.tweet-user-followers, .tweet-retweet-count {
+  color: #c00;
+  /*font-weight: bold;*/
 }
 
 .tweet-link {
   text-align: justify;
+  color: black;
   /*max-width: 20%;*/
 }

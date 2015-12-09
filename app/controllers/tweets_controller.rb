@@ -76,7 +76,7 @@ class TweetsController < ApplicationController
     # the counter is to prevent it from breaking
     counter = 0
     new_ids = ids - Tweet.pluck(:twitter_id) - Blacklist.pluck(:tweet_id)
-    while start_index < new_ids.length && counter < 15
+    while start_index < new_ids.length && counter < 5
       bucket_of_ids = new_ids[start_index...end_index]
       twitter_data.concat(fetch_tweets_bucket(twitter_client, bucket_of_ids))
       start_index += 100
