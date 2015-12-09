@@ -97,6 +97,7 @@ class TweetsController < ApplicationController
   def get_column_data(spreadsheets, column_number)
     column_data = []
     spreadsheets.each do |spreadsheet|
+      p "SPREADSHEET"
       worksheet = spreadsheet.worksheets[0]
       column_data.concat(get_ids_in_column(worksheet, column_number))
     end
