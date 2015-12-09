@@ -12,7 +12,8 @@ OpenSSL::SSL::VERIFY_PEER = OpenSSL::SSL::VERIFY_NONE
 #
 class TweetsController < ApplicationController
   def index
-    render_pending_tweets
+    @tweets = Tweet.pending.order(tweet_date: :desc).limit(3000)
+    render :index
   end
 
   def fetch_tweets
@@ -66,11 +67,6 @@ class TweetsController < ApplicationController
 
   private
 
-  def render_pending_tweets
-    @tweets = Tweet.pending.order(tweet_date: :desc).limit(3000)
-    render :index
-  end
-
   def get_twitter_data_from_spreadsheets(twitter_client, spreadsheets)
     ids = get_column_data(spreadsheets, 4).uniq
     start_index = 0
@@ -95,7 +91,7 @@ class TweetsController < ApplicationController
     tweet = Tweet.find(id)
     tweet.update({column => true})
     tweet.save
-    render_pending_tweets
+    redirect_to "/"
   end
 
   def get_column_data(spreadsheets, column_number)

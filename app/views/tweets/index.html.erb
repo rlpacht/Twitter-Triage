@@ -75,6 +75,9 @@
       </td>
       <td class="reject-tweet">
         <%= button_to "Reject", { action: "mark_rejected", id: tweet.id }, {class: "btn btn-danger"}%>
+        <!-- <button class="reject-button btn btn-danger" data-id=<%=tweet.twitter_id%> >
+          <%=tweet.twitter_id%>
+        </button> -->
       </td>
       <td class="tweet-done">
         <%= button_to "Complete", { action: "mark_done", id: tweet.id }, {class: "btn btn-primary"}%>
