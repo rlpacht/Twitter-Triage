@@ -62,11 +62,6 @@ td .btn {
   padding: 4px;
 }
 
-.tweet-user-followers, .tweet-retweet-count {
-  color: #c00;
-  /*font-weight: bold;*/
-}
-
 .tweet-link {
   text-align: justify;
   color: black;
