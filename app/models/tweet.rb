@@ -24,7 +24,6 @@ class Tweet < ActiveRecord::Base
   end
 
   def self.add_tweets_to_db(tweets_data)
-    binding.pry
     tweets_to_verify = Tweet.extract_retweets(tweets_data)
     tweets_to_verify.each do |tweet_data|
       if Tweet.is_tweet_valid?(tweet_data)
