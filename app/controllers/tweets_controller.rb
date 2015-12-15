@@ -175,7 +175,7 @@ class TweetsController < ApplicationController
   # end
 
   def rejected
-    @tweets = Tweet.where(rejected: true)
+    @tweets = Tweet.where(rejected: true).page(params[:page])
     render :rejected
   end
 
@@ -184,7 +184,7 @@ class TweetsController < ApplicationController
   end
 
   def done
-    @tweets = Tweet.where(done: true)
+    @tweets = Tweet.where(done: true).page(params[:page])
     render :done
   end
 
@@ -193,7 +193,7 @@ class TweetsController < ApplicationController
   end
 
   def favorited
-    @tweets = Tweet.where(favorited: true)
+    @tweets = Tweet.where(favorited: true).page(params[:page])
     render :favorited
   end
 

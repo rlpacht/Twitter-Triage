@@ -14,15 +14,3 @@
 //= require jquery_ujs
 //= require turbolinks
 //= require_tree .
-
-
-// <%= button_to "Reject", { action: "mark_rejected", id: tweet.id }, {class: "btn btn-danger"}%>
-
-$(function() {
-  $('.reject-button').on("click", function () {
-    $.post("tweets/reject", {id: this.dataset.id},function() {
-      alert("success");
-    })
-  });
-});
-
