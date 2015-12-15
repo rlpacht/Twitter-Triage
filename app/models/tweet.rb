@@ -21,11 +21,7 @@ class Tweet < ActiveRecord::Base
   end
 
   def self.tweets_last_fetched
-    t = LastFetched.last.last_fetched
-    if t = nil
-      return 0
-    end
-    "#{t.month}/#{t.day}/#{t.year} at #{t.hour}:#{LastFetched.padded_minutes(t.min)}"
+    LastFetched.format_time
   end
 
   def formatted_age
