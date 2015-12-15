@@ -109,7 +109,7 @@ class TweetsController < ApplicationController
     ]
 
   def index
-    @tweets = Tweet.pending.order(tweet_date: :desc).limit(500)
+    @tweets = Tweet.pending.order(tweet_date: :desc).page(params[:page])
     render :index
   end
 
