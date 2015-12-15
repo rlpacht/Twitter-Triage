@@ -31,6 +31,9 @@
         Retweet Count
       </th>
       <th>
+        Favorite Count
+      </th>
+      <th>
         Age
       </th>
       <th>
@@ -64,6 +67,9 @@
       <td class="tweet-retweet-count">
         <%= number_with_delimiter(tweet.retweet_count, :delimiter => ',') %>
       </td>
+      <td>
+        <%= tweet.favorite_count %>
+      </td>
       <td class="tweet-age">
         <%= tweet.formatted_age %>
       </td>
@@ -78,13 +84,13 @@
         </a>
       </td>
       <td class="buttons">
-        <%= link_to "", { action: "mark_rejected", id: tweet.id }, {class: "btn btn-danger glyphicon glyphicon-remove"}%>
+        <%= link_to "", { action: "mark_rejected", id: tweet.id }, {class: "btn btn-danger fa fa-times"}%>
       </td>
       <td>
-        <%= link_to "", { action: "mark_done", id: tweet.id }, {class: "btn btn-primary glyphicon glyphicon-ok"}%>
+        <%= link_to "", { action: "mark_done", id: tweet.id }, {class: "btn btn-primary fa fa-check"}%>
       </td>
       <td>
-        <%= link_to "", { action: "mark_favorited", id: tweet.id }, {class: "btn btn-success glyphicon glyphicon-heart"}%>
+        <%= link_to "", { action: "mark_favorited", id: tweet.id }, {class: "btn btn-success fa fa-heart"}%>
       </td>
 
     </tr>

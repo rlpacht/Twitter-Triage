@@ -67,7 +67,8 @@ class Tweet < ActiveRecord::Base
           tweet_date: Time.parse(tweet_data[:created_at]),
           retweet_count: tweet_data[:retweet_count],
           user: tweet_data[:user][:screen_name],
-          users_followers: tweet_data[:user][:followers_count]
+          users_followers: tweet_data[:user][:followers_count],
+          favorite_count: tweet_data[:favorite_count]
         })
       else
         Blacklist.find_or_create_by({tweet_id: tweet_data[:id_str]})
@@ -129,7 +130,7 @@ class Tweet < ActiveRecord::Base
   def self.is_tweet_valid?(tweet_data)
     tweet_text = tweet_data[:text]
     return Tweet.unique_text_and_id?(tweet_data) &&
-      !Tweet.contains_blacklist?(tweet_text, ["deal"]) &&
+      !Tweet.contains_blacklist?(tweet_text, ["deal", "offer"]) &&
       !Tweet.is_tweet_melange?(tweet_data)
   end
 end

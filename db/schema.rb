@@ -11,7 +11,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20151203031009) do
+ActiveRecord::Schema.define(version: 20151215190823) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -36,6 +36,7 @@ ActiveRecord::Schema.define(version: 20151203031009) do
     t.boolean  "done",             default: false
     t.boolean  "favorited",        default: false
     t.datetime "tweet_date"
+    t.integer  "favorite_count"
   end
 
 end

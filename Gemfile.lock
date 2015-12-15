@@ -44,6 +44,9 @@ GEM
       multi_json (>= 1.0.0)
     binding_of_caller (0.7.2)
       debug_inspector (>= 0.0.1)
+    bootstrap-kaminari-views (0.0.5)
+      kaminari (>= 0.13)
+      rails (>= 3.1)
     buftok (0.2.0)
     builder (3.2.2)
     byebug (4.0.5)
@@ -115,6 +118,9 @@ GEM
       thor (>= 0.14, < 2.0)
     json (1.8.3)
     jwt (1.5.2)
+    kaminari (0.16.3)
+      actionpack (>= 3.0.0)
+      activesupport (>= 3.0.0)
     kgio (2.9.3)
     launchy (2.4.3)
       addressable (~> 2.3)
@@ -256,6 +262,7 @@ PLATFORMS
   ruby
 
 DEPENDENCIES
+  bootstrap-kaminari-views
   coffee-rails (~> 4.1.0)
   figaro
   google-api-client (< 0.9)
@@ -263,6 +270,7 @@ DEPENDENCIES
   httparty
   jbuilder (~> 2.0)
   jquery-rails
+  kaminari
   postgresql
   pry-byebug
   rails (= 4.2.1)

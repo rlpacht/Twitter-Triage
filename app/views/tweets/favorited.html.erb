@@ -28,6 +28,12 @@
         Retweet Count
       </th>
       <th>
+        Favorite Count
+      </th>
+      <th>
+        Age
+      </th>
+      <th>
         Created On
       </th>
     </tr>
@@ -46,6 +52,12 @@
       </td>
       <td class="tweet-retweet-count">
         <%= tweet.retweet_count %>
+      </td>
+      <td>
+        <%= tweet.favorite_count %>
+      </td>
+      <td class="tweet-age">
+        <%= tweet.formatted_age %>
       </td>
       <td class="tweet-date">
         <%= tweet.formatted_date %>

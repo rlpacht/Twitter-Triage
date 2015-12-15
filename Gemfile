@@ -31,6 +31,10 @@ gem 'twitter', '5.15'
 gem 'httparty'
 
 gem "figaro"
+
+gem 'kaminari'
+
+gem 'bootstrap-kaminari-views'
 # gem 'google-drive'
 # Use ActiveModel has_secure_password
 # gem 'bcrypt', '~> 3.1.7'
