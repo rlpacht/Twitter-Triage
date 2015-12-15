@@ -31,31 +31,17 @@ table {
   max-width: 10%;
   text-align: center;
   padding: 0px;
-  /*table-layout: fixed;*/
+  margin-left: .3%;
 }
-
-.table {
-  padding: 0px;
-}
-
 
 td, th, tr {
   text-align: center;
   border: 1px solid black;
   padding: 0px;
-
-  /*font-size: 12px;*/
 }
 
 tr:hover td {
   background:#EEE
-}
-
-td .btn {
-  /*text-align: justify;*/
-  /*font-size: 10px;*/
-  /*max-width: 80%;*/
-
 }
 
 .tweet-user-data {
@@ -65,5 +51,4 @@ td .btn {
 .tweet-link {
   text-align: justify;
   color: black;
-  /*max-width: 20%;*/
 }
