@@ -20,6 +20,11 @@ class Tweet < ActiveRecord::Base
     twitter_id.to_i
   end
 
+  def self.tweets_last_fetched
+    t = LastFetched.last.last_fetched
+    "#{t.month}/#{t.day}/#{t.year} at #{t.hour}:#{LastFetched.padded_minutes(t.min)}"
+  end
+
   def formatted_age
     seconds = age_in_seconds
     minutes = seconds / 60

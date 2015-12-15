@@ -114,6 +114,7 @@ class TweetsController < ApplicationController
   end
 
   def fetch_tweets
+    LastFetched.create({last_fetched:Time.now})
     searched_tweets = search_for_tweets
     existing_ids_set = Set.new(Tweet.pluck(:twitter_id) + Blacklist.pluck(:tweet_id))
     new_tweets = searched_tweets.select do |tweet|
