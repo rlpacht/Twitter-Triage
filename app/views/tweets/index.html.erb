@@ -19,7 +19,7 @@
   <thead class="table-row">
     <tr>
       <th>
-        Text
+        Tweet
       </th>
       <th>
         User
@@ -40,7 +40,13 @@
         Reply
       </th>
       <th>
-        Triage
+        Reject
+      </th>
+      <th>
+        Done
+      </th>
+      <th>
+        Saved
       </th>
     </tr>
   </thead>
@@ -70,19 +76,17 @@
         href="https://twitter.com/intent/tweet?in_reply_to=<%=tweet.twitter_id_number%>&text=<%=tweet.reply_message%>">
           <i class="fa fa-reply"></i>
         </a>
-
-        <!-- <a
-          href="https://twitter.com/intent/tweet"
-          data-text="custom share text"
-          data-in-reply-to=<%=tweet.twitter_id_number%>>
-        Tweet
-        </a> -->
       </td>
       <td class="buttons">
-        <%= button_to "Reject", { action: "mark_rejected", id: tweet.id }, {class: "btn btn-danger"}%>
-        <%= button_to "Done", { action: "mark_done", id: tweet.id }, {class: "btn btn-primary"}%>
-        <%= button_to "Save", { action: "mark_favorited", id: tweet.id }, {class: "btn btn-success"}%>
+        <%= link_to "", { action: "mark_rejected", id: tweet.id }, {class: "btn btn-danger glyphicon glyphicon-remove"}%>
       </td>
+      <td>
+        <%= link_to "", { action: "mark_done", id: tweet.id }, {class: "btn btn-primary glyphicon glyphicon-ok"}%>
+      </td>
+      <td>
+        <%= link_to "", { action: "mark_favorited", id: tweet.id }, {class: "btn btn-success glyphicon glyphicon-heart"}%>
+      </td>
+
     </tr>
   <% end %>
 </table>

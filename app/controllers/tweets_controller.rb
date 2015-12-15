@@ -104,13 +104,12 @@ class TweetsController < ApplicationController
         '"concealer orange"',
         '"concealer red"',
         '"concealer pink"',
-        '"concealer struggle"',
-        '"-deals"'
+        '"concealer struggle"'
       ]
     ]
 
   def index
-    @tweets = Tweet.pending.order(tweet_date: :desc).limit(1000)
+    @tweets = Tweet.pending.order(tweet_date: :desc).limit(500)
     render :index
   end
 
