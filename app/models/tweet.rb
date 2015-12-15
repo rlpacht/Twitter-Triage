@@ -1,4 +1,5 @@
 require 'time'
+require 'uri'
 
 class Tweet < ActiveRecord::Base
 
@@ -13,6 +14,39 @@ class Tweet < ActiveRecord::Base
   def formatted_date
     t = tweet_date
     "#{t.month}/#{t.day}/#{t.year} at #{t.hour}:#{padded_minutes(t.min)}"
+  end
+
+  def twitter_id_number
+    twitter_id.to_i
+  end
+
+  def formatted_age
+    seconds = age_in_seconds
+    minutes = seconds / 60
+    if minutes == 0
+      return "#{seconds}s"
+    else
+      hours = minutes / 60
+      if hours == 0
+        return "#{minutes}m"
+      else
+        days = hours / 24
+        if days == 0
+          return "#{hours}h"
+        else
+          weeks = days / 7
+          if weeks == 0
+            return "#{days}d"
+          else
+            return "#{weeks}w"
+          end
+        end
+      end
+    end
+  end
+
+  def reply_message
+    return URI.encode("Snap a selfie with http://melange.com and we'll mix custom foundation to perfectly match your skin! Try it for free!")
   end
 
   def self.pending
@@ -42,6 +76,10 @@ class Tweet < ActiveRecord::Base
   end
 
   private
+
+  def age_in_seconds
+    (Time.now - tweet_date).to_i
+  end
 
   def padded_minutes(minutes)
     if minutes < 10

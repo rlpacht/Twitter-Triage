@@ -31,7 +31,13 @@
         Retweet Count
       </th>
       <th>
+        Age
+      </th>
+      <th>
         Created On
+      </th>
+      <th>
+        Reply
       </th>
       <th>
         Triage
@@ -52,8 +58,25 @@
       <td class="tweet-retweet-count">
         <%= number_with_delimiter(tweet.retweet_count, :delimiter => ',') %>
       </td>
+      <td class="tweet-age">
+        <%= tweet.formatted_age %>
+      </td>
       <td class="tweet-date">
         <%= tweet.formatted_date %>
+      </td>
+      <td>
+        <a
+        class ="btn btn-primary"
+        href="https://twitter.com/intent/tweet?in_reply_to=<%=tweet.twitter_id_number%>&text=<%=tweet.reply_message%>">
+          <i class="fa fa-reply"></i>
+        </a>
+
+        <!-- <a
+          href="https://twitter.com/intent/tweet"
+          data-text="custom share text"
+          data-in-reply-to=<%=tweet.twitter_id_number%>>
+        Tweet
+        </a> -->
       </td>
       <td class="buttons">
         <%= button_to "Reject", { action: "mark_rejected", id: tweet.id }, {class: "btn btn-danger"}%>

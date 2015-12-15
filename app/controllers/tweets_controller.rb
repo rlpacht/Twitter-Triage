@@ -10,8 +10,104 @@ require 'twitter/headers'
 require "json"
 require 'uri'
 require 'set'
-OpenSSL::SSL::VERIFY_PEER = OpenSSL::SSL::VERIFY_NONE
+# OpenSSL::SSL::VERIFY_PEER = OpenSSL::SSL::VERIFY_NONE
 class TweetsController < ApplicationController
+
+  @@keywords = [
+      [
+        '"makeup color"',
+        '"makeup match"',
+        '"foundation struggle"',
+        '"concealer color"',
+        '"concealer matching"',
+        '"foundation mix"',
+        '"foundation blend"',
+        '"foundation shade"',
+        '"foundation tone"',
+        '"foundation undertone"',
+        '"foundation skintone"',
+        '"foundation tan"',
+        '"foundation tanned"',
+        '"foundation pale"',
+        '"foundation light"'
+      ],
+      [
+        '"foundation color"',
+        '"foundation colour"',
+        '"foundation match"',
+        '"foundation matching"',
+        '"foundation mixing"',
+        '"foundation brown"',
+        '"foundation dark"',
+        '"foundation yellow"',
+        '"foundation black"',
+        '"foundation grey"',
+        '"foundation gray"',
+        '"foundation ashy"',
+        '"foundation orange"',
+        '"foundation red"',
+        '"foundation pink"'
+      ],
+      [
+        '"makeup colour"',
+        '"makeup matching"',
+        '"makeup mix"',
+        '"makeup mixing"',
+        '"makeup blend"',
+        '"makeup shade"',
+        '"makeup tone"',
+        '"makeup undertone"',
+        '"makeup skintone"',
+        '"makeup tan"',
+        '"makeup tanned"',
+        '"makeup woc"',
+        '"makeup pale"',
+        '"makeup light"',
+        '"makeup brown"'
+      ],
+      [
+        '"makeup dark"',
+        '"makeup yellow"',
+        '"makeup black"',
+        '"makeup grey"',
+        '"makeup gray"',
+        '"makeup ashy"',
+        '"makeup orange"',
+        '"makeup red"',
+        '"makeup pink"',
+        '"makeup struggle"',
+        '"concealer colour"',
+        '"concealer match"',
+        '"concealer mix"',
+        '"concealer mixing"',
+        '"concealer blend"'
+      ],
+      [
+        '"concealer shade"',
+        '"concealer tone"',
+        '"concealer undertone"',
+        '"concealer skintone"',
+        '"concealer tan"',
+        '"concealer tanned"',
+        '"concealer woc"',
+        '"concealer pale"',
+        '"concealer light"',
+        '"concealer brown"',
+        '"concealer dark"',
+        '"concealer yellow"',
+        '"concealer black"',
+        '"concealer grey"',
+        '"concealer gray"'
+      ],
+      [
+        '"concealer ashy"',
+        '"concealer orange"',
+        '"concealer red"',
+        '"concealer pink"',
+        '"concealer struggle"',
+        '"-deals"'
+      ]
+    ]
 
   def index
     @tweets = Tweet.pending.order(tweet_date: :desc).limit(1000)
@@ -21,7 +117,6 @@ class TweetsController < ApplicationController
   def fetch_tweets
     searched_tweets = search_for_tweets
     existing_ids_set = Set.new(Tweet.pluck(:twitter_id) + Blacklist.pluck(:tweet_id))
-
     new_tweets = searched_tweets.select do |tweet|
       !existing_ids_set.include?(tweet[:id_str])
     end
@@ -29,6 +124,10 @@ class TweetsController < ApplicationController
     redirect_to "/"
   end
 
+
+  # keywords is an array of arrays containing the keywords
+  # this method iterates through that array, join the keywords,
+  # and then perform the search
   def search_for_tweets
     twitter_client = Twitter::REST::Client.new do |config|
       config.consumer_key        = ENV["twitter_key"]
@@ -38,26 +137,20 @@ class TweetsController < ApplicationController
     end
     # there are 15 terms in this query, more terms could be added,
     # but no tweets matching all of the criteria will be found
-    keywords = [
-      '"makeup color"',
-      '"makeup matching"',
-      '"foundation struggle"',
-      '"concealer color"',
-      '"concealer matching"',
-      '"foundation mix"',
-      '"foundation blend"',
-      '"foundation shade"',
-      '"foundation tone"',
-      '"foundation undertone"',
-      '"foundation skintone"',
-      '"foundation tan"',
-      '"foundation tanned"',
-      '"foundation pale"',
-      '"foundation light"'
-    ]
-    keywords_joined = keywords.join(" OR ")
-    search_query = URI.encode(keywords_joined)
-    searched_tweets = twitter_client.search(search_query).attrs[:statuses]
+
+
+
+    searched_tweets = []
+    most_recent_tweet = Tweet.maximum('twitter_id')
+    @@keywords.each do |keyword_group|
+      keywords_joined = keyword_group.join(" OR ")
+      search_query = URI.encode(keywords_joined)
+      new_searched_tweets = twitter_client.search(search_query, {
+        :since_id => most_recent_tweet
+      }).attrs[:statuses]
+      searched_tweets.concat(new_searched_tweets)
+    end
+    return searched_tweets
 
   end
 
