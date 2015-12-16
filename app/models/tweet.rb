@@ -12,7 +12,7 @@ class Tweet < ActiveRecord::Base
   end
 
   def formatted_date
-    t = tweet_date
+    t = tweet_date.localtime
     "#{t.month}/#{t.day}/#{t.year} at #{t.hour}:#{padded_minutes(t.min)}"
   end
 
@@ -134,7 +134,7 @@ class Tweet < ActiveRecord::Base
   def self.is_tweet_valid?(tweet_data)
     tweet_text = tweet_data[:text]
     return Tweet.unique_text_and_id?(tweet_data) &&
-      !Tweet.contains_blacklist?(tweet_text, ["deal", "offer"]) &&
+      !Tweet.contains_blacklist?(tweet_text, ["deal", "offer", "ebay", "charitable"]) &&
       !Tweet.is_tweet_melange?(tweet_data)
   end
 end

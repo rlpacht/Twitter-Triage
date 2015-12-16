@@ -109,12 +109,13 @@ class TweetsController < ApplicationController
     ]
 
   def index
-    @tweets = Tweet.pending.order(tweet_date: :desc).page(params[:page])
+    @page = params[:page]
+    @tweets = Tweet.pending.order(tweet_date: :desc).page(@page)
     render :index
   end
 
   def fetch_tweets
-    LastFetched.create({last_fetched:Time.now})
+    LastFetched.create({last_fetched: Time.now})
     searched_tweets = search_for_tweets
     existing_ids_set = Set.new(Tweet.pluck(:twitter_id) + Blacklist.pluck(:tweet_id))
     new_tweets = searched_tweets.select do |tweet|
@@ -181,7 +182,7 @@ class TweetsController < ApplicationController
   end
 
   def mark_rejected
-    mark_property(:rejected, params[:id])
+    mark_property(:rejected, params[:id], params[:page])
   end
 
   def done
@@ -190,7 +191,7 @@ class TweetsController < ApplicationController
   end
 
   def mark_done
-    mark_property(:done, params[:id])
+    mark_property(:done, params[:id], params[:page])
   end
 
   def favorited
@@ -199,7 +200,7 @@ class TweetsController < ApplicationController
   end
 
   def mark_favorited
-    mark_property(:favorited, params[:id])
+    mark_property(:favorited, params[:id], params[:page])
   end
 
   private
@@ -224,11 +225,11 @@ class TweetsController < ApplicationController
   #   return twitter_data
   # end
 
-  def mark_property(column, id)
+  def mark_property(column, id, page)
     tweet = Tweet.find(id)
     tweet.update({column => true})
     tweet.save
-    redirect_to "/"
+    redirect_to action: 'index', page: page
   end
 
   # def get_column_data(spreadsheets, column_number)

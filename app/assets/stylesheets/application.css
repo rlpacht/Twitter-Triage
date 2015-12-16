@@ -45,7 +45,8 @@ tr:hover td {
 }
 
 .tweet-user-data {
-  padding: 4px;
+  /*padding: 4px;*/
+  padding: 0px;
 }
 
 .tweet-link {
