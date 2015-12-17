@@ -111,6 +111,7 @@ class TweetsController < ApplicationController
   def index
     @page = params[:page]
     @tweets = Tweet.pending.order(tweet_date: :desc).page(@page)
+    update_tweets(@tweets)
     render :index
   end
 
@@ -126,20 +127,24 @@ class TweetsController < ApplicationController
   end
 
 
-  # keywords is an array of arrays containing the keywords
-  # this method iterates through that array, join the keywords,
-  # and then perform the search
-  def search_for_tweets
+
+  def get_twitter_client
     twitter_client = Twitter::REST::Client.new do |config|
       config.consumer_key        = ENV["twitter_key"]
       config.consumer_secret     = ENV["twitter_secret"]
       config.access_token        = ENV["twitter_access_token"]
       config.access_token_secret = ENV["twitter_access_token_secret"]
     end
+  end
+
+  def search_for_tweets
+    # keywords is an array of arrays containing the keywords
+    # this method iterates through that array, join the keywords,
+    # and then perform the search
     # there are 15 terms in this query, more terms could be added,
     # but no tweets matching all of the criteria will be found
 
-
+    twitter_client = get_twitter_client
 
     searched_tweets = []
     most_recent_tweet = Tweet.maximum('twitter_id')
@@ -153,6 +158,29 @@ class TweetsController < ApplicationController
     end
     return searched_tweets
 
+  end
+
+  def update_tweets(tweets)
+    client = get_twitter_client
+
+    tweet_ids = tweets.map do |tweet|
+      tweet.twitter_id
+    end
+    tweet_ids = tweet_ids.join(",")
+    request_options = {id: tweet_ids}
+    twitter_request = Twitter::REST::Request.new(client, :get, "1.1/statuses/lookup.json",  request_options)
+    updated_tweet_data = twitter_request.perform
+    updated_tweet_data.each do |tweet_info|
+      # tweet = Tweet.find_by({twitter_id: tweet_info[:id_str]})
+      tweet_to_update = tweets.find do |tweet|
+        tweet.twitter_id == tweet_info[:id_str]
+      end
+      tweet_to_update.update({
+        retweet_count: tweet_info[:retweet_count],
+        users_followers: tweet_info[:user][:followers_count],
+        favorite_count: tweet_info[:favorite_count]
+      })
+    end
   end
 
   # def fetch_tweets
