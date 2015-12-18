@@ -189,6 +189,11 @@ class TweetsController < ApplicationController
     page = params[:page]
     order = params[:order] || :tweet_date
     UserBlacklist.create({user: params[:user]})
+    blacklist_tweets = Tweet.where({user: params[:user]})
+    blacklist_tweets.each do |tweet|
+      tweet.update({:rejected => true})
+      tweet.save
+    end
     redirect_to action: 'index', page: page, order: order
   end
 

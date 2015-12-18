@@ -140,6 +140,6 @@ class Tweet < ActiveRecord::Base
     return Tweet.unique_text_and_id?(tweet_data) &&
       !Tweet.contains_blacklist?(tweet_text, ["deal", "offer", "ebay", "charitable", "hospital", "donation", "grant"]) &&
       !Tweet.is_tweet_melange?(tweet_data) &&
-      !Tweet.is_user_blacklisted?(tweets_data)
+      !Tweet.is_user_blacklisted?(tweet_data)
   end
 end
