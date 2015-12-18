@@ -28,19 +28,19 @@
         User
       </th>
       <th>
-        Number of Followers
+        <%= link_to "Number of Followers", { action: "index", params: {page: 1, order: :users_followers}}%>
       </th>
       <th>
-        Retweet Count
+        <%= link_to "Retweet Count", { action: "index", params: {page: 1, order: :retweet_count}}%>
       </th>
       <th>
-        Favorite Count
+        <%= link_to "Favorite Count", { action: "index", params: {page: 1, order: :favorite_count}}%>
       </th>
       <th>
         Age
       </th>
       <th>
-        Created On
+        <%= link_to "Created On", { action: "index", params: {page: @page, order: :tweet_date}}%>
       </th>
       <th>
         Reply
@@ -63,6 +63,8 @@
       </td>
       <td class="tweet-user-data">
         <%=link_to tweet.user, tweet.user_source, :target => "_blank" %>
+        <br>
+        <%= link_to "X", { action: "blacklist_user", id: tweet.id, params: {page: @page, order: @order, user: tweet.user}}, {class: "blacklist-user-btn btn-xs"}%>
       </td>
       <td class="tweet-user-followers">
         <%= number_with_delimiter(tweet.users_followers, :delimiter => ',') %>
@@ -87,13 +89,13 @@
         </a>
       </td>
       <td class="buttons">
-        <%= link_to "", { action: "mark_rejected", id: tweet.id, params: {page: @page} }, {class: "btn btn-danger fa fa-times"}%>
+        <%= link_to "", { action: "mark_rejected", id: tweet.id, params: {page: @page, order: @order} }, {class: "btn btn-danger fa fa-times"}%>
       </td>
       <td>
-        <%= link_to "", { action: "mark_done", id: tweet.id, params: {page: @page} }, {class: "btn btn-primary fa fa-check"}%>
+        <%= link_to "", { action: "mark_done", id: tweet.id, params: {page: @page, order: @order} }, {class: "btn btn-primary fa fa-check"}%>
       </td>
       <td>
-        <%= link_to "", { action: "mark_favorited", id: tweet.id, params: {page: @page} }, {class: "btn btn-success fa fa-heart"}%>
+        <%= link_to "", { action: "mark_favorited", id: tweet.id, params: {page: @page, order: @order} }, {class: "btn btn-success fa fa-heart"}%>
       </td>
 
     </tr>

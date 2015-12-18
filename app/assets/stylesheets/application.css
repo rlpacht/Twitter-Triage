@@ -49,6 +49,15 @@ tr:hover td {
   padding: 0px;
 }
 
+.blacklist-user-btn {
+  display: none;
+  background: black;
+}
+
+.tweet-user-data:hover .blacklist-user-btn {
+  display: inline-block;
+}
+
 .tweet-link {
   text-align: justify;
   color: black;

@@ -44,6 +44,8 @@
       </td>
       <td class="tweet-user-data">
         <%=link_to tweet.user, tweet.user_source, :target => "_blank" %>
+        <br>
+        <%= link_to "X", { action: "blacklist_user", id: tweet.id, params: {page: @page, order: @order, user: tweet.user}}, {class: "blacklist-user-btn btn-xs"}%>
       </td>
       <td class="tweet-user-followers">
         <%= tweet.users_followers %>

@@ -110,7 +110,13 @@ class TweetsController < ApplicationController
 
   def index
     @page = params[:page]
-    @tweets = Tweet.pending.order(tweet_date: :desc).page(@page)
+    if params[:order].nil?
+      @order = :tweet_date
+      @tweets = Tweet.pending.order("#{@order} DESC NULLS LAST").page(@page)
+    else
+      @order = params[:order]
+      @tweets = Tweet.pending.order("#{@order} DESC NULLS LAST").page(@page)
+    end
     update_tweets(@tweets)
     render :index
   end
@@ -125,8 +131,6 @@ class TweetsController < ApplicationController
     Tweet.add_tweets_to_db(new_tweets)
     redirect_to "/"
   end
-
-
 
   def get_twitter_client
     twitter_client = Twitter::REST::Client.new do |config|
@@ -157,7 +161,6 @@ class TweetsController < ApplicationController
       searched_tweets.concat(new_searched_tweets)
     end
     return searched_tweets
-
   end
 
   def update_tweets(tweets)
@@ -171,7 +174,6 @@ class TweetsController < ApplicationController
     twitter_request = Twitter::REST::Request.new(client, :get, "1.1/statuses/lookup.json",  request_options)
     updated_tweet_data = twitter_request.perform
     updated_tweet_data.each do |tweet_info|
-      # tweet = Tweet.find_by({twitter_id: tweet_info[:id_str]})
       tweet_to_update = tweets.find do |tweet|
         tweet.twitter_id == tweet_info[:id_str]
       end
@@ -183,26 +185,12 @@ class TweetsController < ApplicationController
     end
   end
 
-  # def fetch_tweets
-  #   # client = Google::APIClient.new
-  #   @session = GoogleDrive.saved_session("./stored_token.json", nil, ENV["google_id"], ENV["google_secret"])
-  #   # @session = GoogleDrive.saved_session("./stored_token.json", nil, "650842291969-dejntreh6e5q3027jq1tj78j2jj2c05q.apps.googleusercontent.com", "gIn4Ds4jxCczSwbTnwT92v9z")
-
-  #   folder = @session.collection_by_title("fake_data")
-  #   spreadsheets = folder.spreadsheets
-
-  #   twitter_client = Twitter::REST::Client.new do |config|
-  #     config.consumer_key        = ENV["twitter_key"]
-  #     config.consumer_secret     = ENV["twitter_secret"]
-  #     config.access_token        = ENV["twitter_access_token"]
-  #     config.access_token_secret = ENV["twitter_access_token_secret"]
-  #   end
-
-  #   twitter_data = get_twitter_data_from_spreadsheets(twitter_client, spreadsheets)
-
-  #   Tweet.add_tweets_to_db(twitter_data)
-  #   redirect_to "/"
-  # end
+  def blacklist_user
+    page = params[:page]
+    order = params[:order] || :tweet_date
+    UserBlacklist.create({user: params[:user]})
+    redirect_to action: 'index', page: page, order: order
+  end
 
   def rejected
     @tweets = Tweet.where(rejected: true).page(params[:page])
@@ -210,7 +198,8 @@ class TweetsController < ApplicationController
   end
 
   def mark_rejected
-    mark_property(:rejected, params[:id], params[:page])
+    order = params[:order] || :tweet_date
+    mark_property(:rejected, params[:id], params[:page], order)
   end
 
   def done
@@ -219,7 +208,8 @@ class TweetsController < ApplicationController
   end
 
   def mark_done
-    mark_property(:done, params[:id], params[:page])
+    order = params[:order] || :tweet_date
+    mark_property(:done, params[:id], params[:page], order)
   end
 
   def favorited
@@ -228,63 +218,18 @@ class TweetsController < ApplicationController
   end
 
   def mark_favorited
-    mark_property(:favorited, params[:id], params[:page])
+    order = params[:order] || :tweet_date
+    mark_property(:favorited, params[:id], params[:page], order)
   end
 
   private
 
-  # def get_twitter_data_from_spreadsheets(twitter_client, spreadsheets)
-  #   ids = get_column_data(spreadsheets, 4).uniq
-  #   start_index = 0
-  #   end_index = 100
-  #   twitter_data = []
-  #   # twitter will not let you make more than 15 requests every fifteen minutes
-  #   # the counter is to prevent it from breaking
-  #   counter = 0
-  #   new_ids = ids - Tweet.pluck(:twitter_id) - Blacklist.pluck(:tweet_id)
-  #   while start_index < new_ids.length && counter < 5
-  #     bucket_of_ids = new_ids[start_index...end_index]
-  #     twitter_data.concat(fetch_tweets_bucket(twitter_client, bucket_of_ids))
-  #     start_index += 100
-  #     end_index += 100
-  #     counter += 1
-  #   end
-
-  #   return twitter_data
-  # end
-
-  def mark_property(column, id, page)
+  def mark_property(column, id, page, order)
     tweet = Tweet.find(id)
     tweet.update({column => true})
     tweet.save
-    redirect_to action: 'index', page: page
+    redirect_to action: 'index', page: page, order: order
   end
-
-  # def get_column_data(spreadsheets, column_number)
-  #   column_data = []
-  #   spreadsheets.each do |spreadsheet|
-  #     p "SPREADSHEET"
-  #     worksheet = spreadsheet.worksheets[0]
-  #     column_data.concat(get_ids_in_column(worksheet, column_number))
-  #   end
-  #   return column_data
-  # end
-
-  # def get_ids_in_column(worksheet, column_number)
-  #   (1..worksheet.num_rows).to_a.map do |row_number|
-  #     tweet_url = worksheet[row_number, column_number]
-  #     Tweet.convert_url_to_id(tweet_url)
-  #   end
-  # end
-
-  # Only for one bucket of up to 100 ids. ids must be strings
-  # def fetch_tweets_bucket(client, ids)
-  #   ids_string = ids.join(',')
-  #   request_options = {id: ids_string}
-  #   twitter_request = Twitter::REST::Request.new(client, :get, "1.1/statuses/lookup.json",  request_options)
-  #   twitter_request.perform
-  # end
-
 end
 
 

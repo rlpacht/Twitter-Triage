@@ -1,11 +1,5 @@
 Rails.application.routes.draw do
 
-  # concern :paginatable do
-  #   get '(page/:page)', :action => :index, :on => :collection, :as => ''
-  # end
-
-  # resources :my_resources, :concerns => :paginatable
-
   get "/", to: "tweets#index"
 
   get "tweets/fetch_tweets", to: "tweets#fetch_tweets"
@@ -21,4 +15,6 @@ Rails.application.routes.draw do
   get "tweets/saved", to: "tweets#favorited"
 
   get "tweets/save", to: "tweets#mark_favorited"
+
+  get "tweets/blacklist_user", to: "tweets#blacklist_user"
 end

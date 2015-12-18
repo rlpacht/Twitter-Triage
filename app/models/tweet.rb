@@ -131,10 +131,15 @@ class Tweet < ActiveRecord::Base
     return tweet_data[:user][:screen_name] == "Melange"
   end
 
+  def self.is_user_blacklisted?(tweet_data)
+    UserBlacklist.exists?({user: tweet_data[:user][:screen_name]})
+  end
+
   def self.is_tweet_valid?(tweet_data)
     tweet_text = tweet_data[:text]
     return Tweet.unique_text_and_id?(tweet_data) &&
-      !Tweet.contains_blacklist?(tweet_text, ["deal", "offer", "ebay", "charitable", "hospital"]) &&
-      !Tweet.is_tweet_melange?(tweet_data)
+      !Tweet.contains_blacklist?(tweet_text, ["deal", "offer", "ebay", "charitable", "hospital", "donation", "grant"]) &&
+      !Tweet.is_tweet_melange?(tweet_data) &&
+      !Tweet.is_user_blacklisted?(tweets_data)
   end
 end
