@@ -110,25 +110,21 @@ class TweetsController < ApplicationController
 
   def index
     @page = params[:page]
-    if params[:order].nil?
-      @order = :tweet_date
-      @tweets = Tweet.pending.order("#{@order} DESC NULLS LAST").page(@page)
-    else
-      @order = params[:order]
-      @tweets = Tweet.pending.order("#{@order} DESC NULLS LAST").page(@page)
-    end
-    # update_tweets(@tweets)
+    @order = params[:order] || :tweet_date
+    @tweets = Tweet.pending.order("#{@order} DESC NULLS LAST").page(@page)
+    update_tweets(@tweets)
     render :index
   end
 
   def fetch_tweets
     LastFetched.create({last_fetched: Time.now})
     searched_tweets = search_for_tweets
+    flash[:num_found_tweets] = searched_tweets.length
     existing_ids_set = Set.new(Tweet.pluck(:twitter_id) + Blacklist.pluck(:tweet_id))
     new_tweets = searched_tweets.select do |tweet|
       !existing_ids_set.include?(tweet[:id_str])
     end
-    Tweet.add_tweets_to_db(new_tweets)
+    flash[:num_tweets_added] = Tweet.add_tweets_to_db(new_tweets)
     redirect_to "/"
   end
 

@@ -17,4 +17,10 @@
 <span>
   Last Fetched: <%= Tweet.tweets_last_fetched %>
 </span>
+
+<span>
+  Added: <%= flash[:num_tweets_added] %>
+  Total Found: <%= flash[:num_found_tweets] %>
+</span>
+
 <%= render partial: "table" %>

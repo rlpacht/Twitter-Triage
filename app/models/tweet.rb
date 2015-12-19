@@ -3,6 +3,12 @@ require 'uri'
 
 class Tweet < ActiveRecord::Base
 
+  def add_no_urls_column
+    new_text = Tweet.text_without_urls(tweet_text)
+    update(:non_url_text => new_text)
+    save
+  end
+
   def user_source
     "http://twitter.com/#{user}"
   end
@@ -25,7 +31,7 @@ class Tweet < ActiveRecord::Base
   end
 
   def formatted_age
-    seconds = age_in_seconds
+    seconds = age_in_seconds()
     minutes = seconds / 60
     if minutes == 0
       return "#{seconds}s"
@@ -61,8 +67,13 @@ class Tweet < ActiveRecord::Base
     })
   end
 
+  def self.text_without_urls(tweet_text)
+    tweet_text.gsub(/(?:f|ht)tps?:\/[^\s]+/, "")
+  end
+
   def self.add_tweets_to_db(tweets_data)
     tweets_to_verify = Tweet.extract_retweets(tweets_data)
+    tweets_added_counter = 0
     tweets_to_verify.each do |tweet_data|
       if Tweet.is_tweet_valid?(tweet_data)
         Tweet.create({
@@ -72,12 +83,15 @@ class Tweet < ActiveRecord::Base
           retweet_count: tweet_data[:retweet_count],
           user: tweet_data[:user][:screen_name],
           users_followers: tweet_data[:user][:followers_count],
-          favorite_count: tweet_data[:favorite_count]
+          favorite_count: tweet_data[:favorite_count],
+          non_url_text: Tweet.text_without_urls(tweet_data[:text])
         })
+        tweets_added_counter += 1
       else
         Blacklist.find_or_create_by({tweet_id: tweet_data[:id_str]})
       end
     end
+    tweets_added_counter
   end
 
   private
@@ -94,11 +108,6 @@ class Tweet < ActiveRecord::Base
     end
   end
 
-  # def self.convert_url_to_id(tweet_url)
-  #   last_slash_index = tweet_url.rindex("/")
-  #   tweet_url[(last_slash_index + 1)..-1]
-  # end
-
   def self.extract_retweets(tweets_data)
     tweets_data.map do |tweet_data|
       if Tweet.is_retweet?(tweet_data)
@@ -111,9 +120,9 @@ class Tweet < ActiveRecord::Base
   end
 
   def self.unique_text_and_id?(tweet_data)
-    text = tweet_data[:text]
+    text = Tweet.text_without_urls(tweet_data[:text])
     id = tweet_data[:id_str]
-    return !Tweet.exists?(:tweet_text => text) &&
+    return !Tweet.exists?(:non_url_text => text) &&
       !Tweet.exists?(:twitter_id => id)
   end
 
