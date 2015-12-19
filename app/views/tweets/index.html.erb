@@ -8,7 +8,7 @@
   <%= button_to "View Saved Tweets", { action: "favorited"}, {:method => :get, class: "view-saved btn btn-success"}%>
 </span>
 <span class="nav-buttons">
-  <%= button_to "View Pending Tweets", { action: "index"}, {:method => :get, class: "view-tweets btn btn-info",
+  <%= button_to "Home", { action: "index"}, {:method => :get, class: "view-tweets btn btn-info",
     :disabled => true}%>
 </span>
 <span class="nav-buttons">
@@ -17,89 +17,4 @@
 <span>
   Last Fetched: <%= Tweet.tweets_last_fetched %>
 </span>
-
-<table class="table">
-  <thead class="table-row">
-    <tr>
-      <th>
-        Tweet
-      </th>
-      <th>
-        User
-      </th>
-      <th>
-        <%= link_to "Number of Followers", { action: "index", params: {page: 1, order: :users_followers}}%>
-      </th>
-      <th>
-        <%= link_to "Retweet Count", { action: "index", params: {page: 1, order: :retweet_count}}%>
-      </th>
-      <th>
-        <%= link_to "Favorite Count", { action: "index", params: {page: 1, order: :favorite_count}}%>
-      </th>
-      <th>
-        Age
-      </th>
-      <th>
-        <%= link_to "Created On", { action: "index", params: {page: @page, order: :tweet_date}}%>
-      </th>
-      <th>
-        Reply
-      </th>
-      <th>
-        Reject
-      </th>
-      <th>
-        Done
-      </th>
-      <th>
-        Save
-      </th>
-    </tr>
-  </thead>
-  <% @tweets.each_with_index do |tweet, index| %>
-    <tr class="table-row">
-      <td class="tweet-link">
-        <%=link_to tweet.tweet_text, tweet.source_url, :target => "_blank" %>
-      </td>
-      <td class="tweet-user-data">
-        <%=link_to tweet.user, tweet.user_source, :target => "_blank" %>
-        <br>
-        <%= link_to "X", { action: "blacklist_user", id: tweet.id, params: {page: @page, order: @order, user: tweet.user}}, {class: "blacklist-user-btn btn-xs"}%>
-      </td>
-      <td class="tweet-user-followers">
-        <%= number_with_delimiter(tweet.users_followers, :delimiter => ',') %>
-      </td>
-      <td class="tweet-retweet-count">
-        <%= number_with_delimiter(tweet.retweet_count, :delimiter => ',') %>
-      </td>
-      <td>
-        <%= number_with_delimiter(tweet.favorite_count, :delimiter => ',') %>
-      </td>
-      <td class="tweet-age">
-        <%= tweet.formatted_age %>
-      </td>
-      <td class="tweet-date">
-        <%= tweet.formatted_date %>
-      </td>
-      <td>
-        <a
-        class ="btn btn-primary"
-        href="https://twitter.com/intent/tweet?in_reply_to=<%=tweet.twitter_id_number%>&text=<%=tweet.reply_message%>">
-          <i class="fa fa-reply"></i>
-        </a>
-      </td>
-      <td class="buttons">
-        <%= link_to "", { action: "mark_rejected", id: tweet.id, params: {page: @page, order: @order} }, {class: "btn btn-danger fa fa-times"}%>
-      </td>
-      <td>
-        <%= link_to "", { action: "mark_done", id: tweet.id, params: {page: @page, order: @order} }, {class: "btn btn-primary fa fa-check"}%>
-      </td>
-      <td>
-        <%= link_to "", { action: "mark_favorited", id: tweet.id, params: {page: @page, order: @order} }, {class: "btn btn-success fa fa-heart"}%>
-      </td>
-
-    </tr>
-  <% end %>
-</table>
-
-<%= paginate @tweets, :theme => 'twitter-bootstrap-3' %>
+<%= render partial: "table" %>

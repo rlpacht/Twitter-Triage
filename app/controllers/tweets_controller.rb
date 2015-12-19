@@ -117,7 +117,7 @@ class TweetsController < ApplicationController
       @order = params[:order]
       @tweets = Tweet.pending.order("#{@order} DESC NULLS LAST").page(@page)
     end
-    update_tweets(@tweets)
+    # update_tweets(@tweets)
     render :index
   end
 
@@ -231,6 +231,9 @@ class TweetsController < ApplicationController
 
   def mark_property(column, id, page, order)
     tweet = Tweet.find(id)
+    [:rejected, :done, :favorited].each do |property|
+      tweet.update({property => false})
+    end
     tweet.update({column => true})
     tweet.save
     redirect_to action: 'index', page: page, order: order
