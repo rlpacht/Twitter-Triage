@@ -17,4 +17,8 @@ Rails.application.routes.draw do
   get "tweets/save", to: "tweets#mark_favorited"
 
   get "tweets/blacklist_user", to: "tweets#blacklist_user"
+
+  post "tweets", to: "tweets#create"
+
+  post "blacklists", to: "blacklists#create"
 end

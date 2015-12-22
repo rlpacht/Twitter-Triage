@@ -12,7 +12,6 @@ require 'uri'
 require 'set'
 # OpenSSL::SSL::VERIFY_PEER = OpenSSL::SSL::VERIFY_NONE
 class TweetsController < ApplicationController
-
   @@keywords = [
       [
         '"makeup color"',
@@ -114,6 +113,10 @@ class TweetsController < ApplicationController
     @tweets = Tweet.pending.order("#{@order} DESC NULLS LAST").page(@page)
     update_tweets(@tweets)
     render :index
+  end
+
+  def create
+    # Tweet.create
   end
 
   def fetch_tweets

@@ -62,11 +62,30 @@
         <%= tweet.formatted_date %>
       </td>
       <td>
-        <a
-        class ="btn btn-primary"
-        href="https://twitter.com/intent/tweet?in_reply_to=<%=tweet.twitter_id_number%>&text=<%=tweet.reply_message%>">
-          <i class="fa fa-reply"></i>
-        </a>
+
+        <!-- Single button -->
+        <div class="btn-group">
+          <button type="button" class="btn btn-default dropdown-toggle fa fa-reply" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+            <span class="caret"></span>
+          </button>
+          <ul class="dropdown-menu">
+            <li>
+              <a href="#" data-user=<%=tweet.user%> data-id=<%=tweet.twitter_id%> class="pale">Pale</a>
+            </li>
+
+            <li>
+              <a href="#" data-user=<%=tweet.user%> data-id=<%=tweet.twitter_id%> class="dark">Dark</a>
+            </li>
+
+            <li>
+              <a href="#" data-user=<%=tweet.user%> data-id=<%=tweet.twitter_id%> class="agnostic">Agnostic</a>
+            </li>
+
+            <li>
+              <a href="https://twitter.com/intent/tweet?in_reply_to=<%=tweet.twitter_id_number%>" data-user=<%=tweet.user%> data-id=<%=tweet.twitter_id%> class="manual">Manual</a>
+            </li>
+          </ul>
+        </div>
       </td>
       <td class="buttons">
         <%= link_to "", { action: "mark_rejected", id: tweet.id, params: {page: @page, order: @order} }, {class: "btn btn-danger fa fa-times"}%>

@@ -19,8 +19,10 @@
 </span>
 
 <span>
-  Added: <%= flash[:num_tweets_added] %>
-  Total Found: <%= flash[:num_found_tweets] %>
+  <% if !flash[:num_tweets_added].nil? && !flash[:num_found_tweets].nil? %>
+    Added: <%= flash[:num_tweets_added] %>
+    Total Found: <%= flash[:num_found_tweets] %>
+  <% end %>
 </span>
 
 <%= render partial: "table" %>
