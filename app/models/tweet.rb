@@ -3,10 +3,12 @@ require 'uri'
 
 class Tweet < ActiveRecord::Base
 
-  def add_no_urls_column
-    new_text = Tweet.text_without_urls(tweet_text)
-    update(:non_url_text => new_text)
-    save
+  def mentions_length
+    text = tweet_text.split(" ")
+    mentions = text.select do |word|
+      word.index('@') == 0 && word.length > 1
+    end
+    return mentions.join(" ").length
   end
 
   def user_source
@@ -20,14 +22,6 @@ class Tweet < ActiveRecord::Base
   def formatted_date
     t = tweet_date.localtime
     "#{t.month}/#{t.day}/#{t.year} at #{t.hour}:#{padded_minutes(t.min)}"
-  end
-
-  def twitter_id_number
-    twitter_id.to_i
-  end
-
-  def self.tweets_last_fetched
-    LastFetched.format_time
   end
 
   def formatted_age

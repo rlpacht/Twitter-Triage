@@ -61,28 +61,62 @@
       <td class="tweet-date">
         <%= tweet.formatted_date %>
       </td>
-      <td>
+
+      <td class="tweet-reply-controls">
 
         <!-- Single button -->
         <div class="btn-group">
           <button type="button" class="btn btn-default dropdown-toggle fa fa-reply" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
             <span class="caret"></span>
           </button>
+
+          <% if tweet.mentions_length > 0 %>
+            <input type="checkbox" checked="yes">
+          <% end %>
+
           <ul class="dropdown-menu">
-            <li>
-              <a href="#" data-user=<%=tweet.user%> data-id=<%=tweet.twitter_id%> class="pale">Pale</a>
+            <li class="pale-button">
+              <a
+                href="#"
+                data-user=<%=tweet.user%>
+                data-id=<%=tweet.twitter_id%>
+                data-mentions=<%=tweet.mentions_length%>
+                class="pale reply-option">
+                Pale
+              </a>
             </li>
 
             <li>
-              <a href="#" data-user=<%=tweet.user%> data-id=<%=tweet.twitter_id%> class="dark">Dark</a>
+              <a
+                href="#"
+                data-user=<%=tweet.user%>
+                data-id=<%=tweet.twitter_id%>
+                data-mentions=<%=tweet.mentions_length%>
+                class="dark reply-option">
+                Dark
+              </a>
             </li>
 
             <li>
-              <a href="#" data-user=<%=tweet.user%> data-id=<%=tweet.twitter_id%> class="agnostic">Agnostic</a>
+              <a
+                href="#"
+                data-user=<%=tweet.user%>
+                data-id=<%=tweet.twitter_id%>
+                data-mentions=<%=tweet.mentions_length%>
+                class="agnostic reply-option">
+                Agnostic
+              </a>
             </li>
 
             <li>
-              <a href="https://twitter.com/intent/tweet?in_reply_to=<%=tweet.twitter_id_number%>" data-user=<%=tweet.user%> data-id=<%=tweet.twitter_id%> class="manual">Manual</a>
+              <a
+                href="https://twitter.com/intent/tweet?in_reply_to=<%=tweet.twitter_id%>"
+                data-user=<%=tweet.user%>
+                data-id=<%=tweet.twitter_id%>
+                data-mentions=<%=tweet.mentions_length%>
+                class="manual reply-option">
+                Manual
+              </a>
             </li>
           </ul>
         </div>

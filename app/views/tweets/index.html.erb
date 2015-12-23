@@ -15,7 +15,7 @@
   <%= button_to "Fetch new tweets", { action: "fetch_tweets"}, {:method => :get, class: "view-tweets btn btn-info"}%>
 </span>
 <span>
-  Last Fetched: <%= Tweet.tweets_last_fetched %>
+  Last Fetched: <%= LastFetched.format_time %>
 </span>
 
 <span>
