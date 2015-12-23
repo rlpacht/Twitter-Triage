@@ -15,5 +15,3 @@
 //= require bootstrap/dist/js/bootstrap.min.js
 //= require turbolinks
 //= require_tree
-$(function() {
-})

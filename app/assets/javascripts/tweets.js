@@ -3,16 +3,19 @@
 // You can use CoffeeScript in this file: http://coffeescript.org/
 
 function clickHandler(event) {
-  debugger
-  var $parentLi = $(this).parent();
-  if ($parentLi.children().length > 1 && $parentLi.children()[1].checked === true) {
-    var mentionsLength = Number($parentLi.children()[1].dataset.mentions);
+  var $tableCell = $(this).parents('td.tweet-reply-controls');
+  var $checkbox = $tableCell.find('input.include-mentions-count');
+  var mentions;
+  if ($checkbox.length > 0 && $checkbox.is(":checked")) {
+    mentionsLength = Number(this.dataset.mentions);
+  } else {
+    mentionsLength = 0;
   }
-  var newHref = chooseTwitterResponse(this.dataset, this.classList[0]);
+  var newHref = chooseTwitterResponse(this.dataset, this.classList[0], mentionsLength);
   $(this).attr("href", newHref);
 }
 
-function chooseTwitterResponse(dataset, typeString) {
+function chooseTwitterResponse(dataset, typeString, mentionsLength) {
   var responses;
   switch (typeString) {
     case "pale":
@@ -31,16 +34,14 @@ function chooseTwitterResponse(dataset, typeString) {
     return -response.length;
   });
 
-  var mentionsLength = dataset.mentions;
-  var username = dataset.username;
+  var username = dataset.user;
   var shortResponses = sortedResponses.filter(function(response) {
-    console.log(response.length + username.length + 2 + mentionsLength);
     return response.length + username.length + 2 + mentionsLength < 129;
   });
 
   var reply;
   if (shortResponses.length === 0) {
-    reply = encodeURI(_.last(sortedResponses));
+    reply = ""
   } else {
     reply = encodeURI(shortResponses[0]);
   }
@@ -49,15 +50,12 @@ function chooseTwitterResponse(dataset, typeString) {
   return  "https://twitter.com/intent/tweet?in_reply_to=" + tweetId + "&text=" + reply;
 }
 
-$(function() {
-  var $pale = $(".pale");
-  var $dark = $(".dark");
-  var $agnostic = $(".agnostic");
-  $(".tweet-reply-controls").on("click", clickHandler);
-  // $pale.on("click", clickHandler);
-  // $dark.on("click", clickHandler);
-  // $agnostic.on("click", clickHandler);
-});
+$(document).ready(bindReplyHandlers);
+$(document).on('page:load', bindReplyHandlers);
+
+function bindReplyHandlers() {
+  $(".reply-option").on("click", clickHandler);
+}
 
 var paleResponses = [
   "Try melange.com! Custom foundation mixed just for you to perfectly match your skin color, no matter how light! Get free samples!",

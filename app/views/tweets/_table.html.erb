@@ -71,13 +71,13 @@
           </button>
 
           <% if tweet.mentions_length > 0 %>
-            <input type="checkbox" checked="yes">
+            <input type="checkbox" checked="yes" class="include-mentions-count">
           <% end %>
 
           <ul class="dropdown-menu">
             <li class="pale-button">
               <a
-                href="#"
+                href=""
                 data-user=<%=tweet.user%>
                 data-id=<%=tweet.twitter_id%>
                 data-mentions=<%=tweet.mentions_length%>
@@ -88,7 +88,7 @@
 
             <li>
               <a
-                href="#"
+                href=""
                 data-user=<%=tweet.user%>
                 data-id=<%=tweet.twitter_id%>
                 data-mentions=<%=tweet.mentions_length%>
@@ -99,7 +99,7 @@
 
             <li>
               <a
-                href="#"
+                href=""
                 data-user=<%=tweet.user%>
                 data-id=<%=tweet.twitter_id%>
                 data-mentions=<%=tweet.mentions_length%>
