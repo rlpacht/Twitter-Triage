@@ -69,23 +69,26 @@ class Tweet < ActiveRecord::Base
     tweets_to_verify = Tweet.extract_retweets(tweets_data)
     tweets_added_counter = 0
     tweets_to_verify.each do |tweet_data|
-      if Tweet.is_tweet_valid?(tweet_data)
-        Tweet.create({
-          twitter_id: tweet_data[:id_str],
-          tweet_text: tweet_data[:text],
-          tweet_date: Time.parse(tweet_data[:created_at]),
-          retweet_count: tweet_data[:retweet_count],
-          user: tweet_data[:user][:screen_name],
-          users_followers: tweet_data[:user][:followers_count],
-          favorite_count: tweet_data[:favorite_count],
-          non_url_text: Tweet.text_without_urls(tweet_data[:text])
-        })
-        tweets_added_counter += 1
-      else
-        Blacklist.find_or_create_by({tweet_id: tweet_data[:id_str]})
-      end
+      Tweet.validate_and_create(tweet_data)
     end
     tweets_added_counter
+  end
+
+  def self.validate_and_create(tweet_data)
+    if Tweet.is_tweet_valid?(tweet_data)
+      Tweet.create({
+        twitter_id: tweet_data[:id_str],
+        tweet_text: tweet_data[:text],
+        tweet_date: Time.parse(tweet_data[:created_at]),
+        retweet_count: tweet_data[:retweet_count],
+        user: tweet_data[:user][:screen_name],
+        users_followers: tweet_data[:user][:followers_count],
+        favorite_count: tweet_data[:favorite_count],
+        non_url_text: Tweet.text_without_urls(tweet_data[:text])
+      })
+    else
+      Blacklist.find_or_create_by({tweet_id: tweet_data[:id_str]})
+    end
   end
 
   private

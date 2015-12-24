@@ -12,6 +12,9 @@ require 'uri'
 require 'set'
 # OpenSSL::SSL::VERIFY_PEER = OpenSSL::SSL::VERIFY_NONE
 class TweetsController < ApplicationController
+
+  protect_from_forgery :except => :create
+
   @@keywords = [
       [
         '"makeup color"',
@@ -116,7 +119,8 @@ class TweetsController < ApplicationController
   end
 
   def create
-    # Tweet.create
+    @tweet = Tweet.validate_and_create(params[:tweet_data])
+    render json:{tweet: @tweet}
   end
 
   def fetch_tweets
