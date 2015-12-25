@@ -201,7 +201,8 @@ class TweetsController < ApplicationController
   end
 
   def rejected
-    @tweets = Tweet.where(rejected: true).page(params[:page])
+    @order = params[:order] || :tweet_date
+    @tweets = Tweet.where(rejected: true).order("#{@order} DESC NULLS LAST").page(params[:page])
     render :rejected
   end
 
@@ -211,7 +212,8 @@ class TweetsController < ApplicationController
   end
 
   def done
-    @tweets = Tweet.where(done: true).page(params[:page])
+    @order = params[:order] || :tweet_date
+    @tweets = Tweet.where(done: true).order("#{@order} DESC NULLS LAST").page(params[:page])
     render :done
   end
 
@@ -221,7 +223,8 @@ class TweetsController < ApplicationController
   end
 
   def favorited
-    @tweets = Tweet.where(favorited: true).page(params[:page])
+    @order = params[:order] || :tweet_date
+    @tweets = Tweet.where(favorited: true).order("#{@order} DESC NULLS LAST").page(params[:page])
     render :favorited
   end
 
