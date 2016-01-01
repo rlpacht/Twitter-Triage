@@ -55,7 +55,7 @@ tr:hover td {
   background: black;
 }
 
-.tweet-user-data:hover .blacklist-user-btn {
+.blacklist-user-btn {
   display: inline-block;
 }
 
