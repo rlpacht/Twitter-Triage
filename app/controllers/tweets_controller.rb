@@ -185,7 +185,20 @@ class TweetsController < ApplicationController
         users_followers: tweet_info[:user][:followers_count],
         favorite_count: tweet_info[:favorite_count]
       })
+
+      if tweet_info[:user][:followers_count] >= 15000 && tweet_to_update.users_followers == false
+        UserMailer.follower_email(tweet_to_update).deliver_now
+      elsif tweet_info[:retweet_count] >= 5 && tweet_to_update.users_followers == false
+        UserMailer.retweet_email(tweet_to_update).deliver_now
+      elsif tweet_info[:favorite_count] >= 15 && tweet_to_update.users_followers == false
+        UserMailer.favorites_email(tweet_to_update).deliver_now
+      end
     end
+  end
+
+  def show
+    @tweet = Tweet.find(params[:id])
+    render :show
   end
 
   def blacklist_user

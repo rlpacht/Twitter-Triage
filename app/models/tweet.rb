@@ -76,7 +76,7 @@ class Tweet < ActiveRecord::Base
 
   def self.validate_and_create(tweet_data)
     if Tweet.is_tweet_valid?(tweet_data)
-      Tweet.create({
+      new_tweet = Tweet.create({
         twitter_id: tweet_data[:id_str],
         tweet_text: tweet_data[:text],
         tweet_date: Time.parse(tweet_data[:created_at]),
@@ -86,6 +86,13 @@ class Tweet < ActiveRecord::Base
         favorite_count: tweet_data[:favorite_count],
         non_url_text: Tweet.text_without_urls(tweet_data[:text])
       })
+      if tweet_data[:user][:followers_count] >= 15000 && new_tweet.users_followers == false
+        UserMailer.follower_email(new_tweet).deliver_now
+      elsif tweet_data[:retweet_count] >= 5 && new_tweet.users_followers == false
+        UserMailer.retweet_email(new_tweet).deliver_now
+      elsif tweet_data[:favorite_count] >= 15 && new_tweet.users_followers == false
+        UserMailer.favorites_email(new_tweet).deliver_now
+      end
     else
       Blacklist.find_or_create_by({tweet_id: tweet_data[:id_str]})
     end
