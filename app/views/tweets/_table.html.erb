@@ -8,13 +8,13 @@
         User
       </th>
       <th>
-        <%= link_to "Number of Followers", { action: "index", params: {page: 1, order: :users_followers}}%>
+        <%= link_to "Number of Followers", { action: @action, params: {page: 1, order: :users_followers}}%>
       </th>
       <th>
-        <%= link_to "Retweet Count", { action: "index", params: {page: 1, order: :retweet_count}}%>
+        <%= link_to "Retweet Count", { action: @action, params: {page: 1, order: :retweet_count}}%>
       </th>
       <th>
-        <%= link_to "Favorite Count", { action: "index", params: {page: 1, order: :favorite_count}}%>
+        <%= link_to "Favorite Count", { action: @action, params: {page: 1, order: :favorite_count}}%>
       </th>
       <th>
         Age

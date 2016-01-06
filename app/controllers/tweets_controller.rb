@@ -185,13 +185,10 @@ class TweetsController < ApplicationController
         users_followers: tweet_info[:user][:followers_count],
         favorite_count: tweet_info[:favorite_count]
       })
-
-      if tweet_info[:user][:followers_count] >= 15000 && tweet_to_update.users_followers == false
-        UserMailer.follower_email(tweet_to_update).deliver_now
-      elsif tweet_info[:retweet_count] >= 5 && tweet_to_update.users_followers == false
-        UserMailer.retweet_email(tweet_to_update).deliver_now
-      elsif tweet_info[:favorite_count] >= 15 && tweet_to_update.users_followers == false
-        UserMailer.favorites_email(tweet_to_update).deliver_now
+      if tweet_to_update.users_followers == false
+        if tweet_info[:user][:followers_count] >= 15000 || tweet_info[:retweet_count] >= 5 || tweet_info[:favorite_count] >= 15
+          UserMailer.important_email(tweet_to_update).deliver_now
+        end
       end
     end
   end
@@ -216,6 +213,7 @@ class TweetsController < ApplicationController
   def rejected
     @order = params[:order] || :tweet_date
     @tweets = Tweet.where(rejected: true).order("#{@order} DESC NULLS LAST").page(params[:page])
+    @action = "rejected"
     render :rejected
   end
 
@@ -227,6 +225,7 @@ class TweetsController < ApplicationController
   def done
     @order = params[:order] || :tweet_date
     @tweets = Tweet.where(done: true).order("#{@order} DESC NULLS LAST").page(params[:page])
+    @action = "done"
     render :done
   end
 
@@ -238,6 +237,7 @@ class TweetsController < ApplicationController
   def favorited
     @order = params[:order] || :tweet_date
     @tweets = Tweet.where(favorited: true).order("#{@order} DESC NULLS LAST").page(params[:page])
+    @action = "favorited"
     render :favorited
   end
 
