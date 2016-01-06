@@ -115,6 +115,7 @@ class TweetsController < ApplicationController
     @order = params[:order] || :tweet_date
     @tweets = Tweet.pending.order("#{@order} DESC NULLS LAST").page(@page)
     update_tweets(@tweets)
+    @action = "index"
     render :index
   end
 
@@ -185,7 +186,7 @@ class TweetsController < ApplicationController
         users_followers: tweet_info[:user][:followers_count],
         favorite_count: tweet_info[:favorite_count]
       })
-      if tweet_to_update.users_followers == false
+      if tweet_to_update.email_sent == false
         if tweet_info[:user][:followers_count] >= 15000 || tweet_info[:retweet_count] >= 5 || tweet_info[:favorite_count] >= 15
           UserMailer.important_email(tweet_to_update).deliver_now
         end
