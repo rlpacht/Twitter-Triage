@@ -3,6 +3,18 @@ require 'uri'
 
 class Tweet < ActiveRecord::Base
 
+  # Send an email with this tweet's data if this tweet
+  # hasn't already been emailed, and its metrics are
+  # sufficiently high
+  def email_if_needed
+    if !email_sent
+      if users_followers >= 15000 || retweet_count >= 5 || favorite_count >= 15
+        UserMailer.important_email(self).deliver_now
+      end
+    end
+  end
+
+  # TODO: Use the data from the API for this instead
   def mentions_length
     text = tweet_text.split(" ")
     mentions = text.select do |word|
@@ -49,9 +61,9 @@ class Tweet < ActiveRecord::Base
     end
   end
 
-  def reply_message
-    return URI.encode("Snap a selfie with http://melange.com and we'll mix custom foundation to perfectly match your skin! Try it for free!")
-  end
+  # def reply_message
+  #   return URI.encode("Snap a selfie with http://melange.com and we'll mix custom foundation to perfectly match your skin! Try it for free!")
+  # end
 
   def self.pending
     return Tweet.where({
@@ -86,11 +98,7 @@ class Tweet < ActiveRecord::Base
         favorite_count: tweet_data[:favorite_count],
         non_url_text: Tweet.text_without_urls(tweet_data[:text])
       })
-      if new_tweet.email_sent == false
-        if tweet_data[:user][:followers_count] >= 15000 || tweet_data[:retweet_count] >= 5 || tweet_data[:favorite_count] >= 15
-          UserMailer.important_email(new_tweet).deliver_now
-        end
-      end
+      new_tweet.email_if_needed
     else
       Blacklist.find_or_create_by({tweet_id: tweet_data[:id_str]})
     end

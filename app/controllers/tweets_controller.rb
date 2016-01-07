@@ -170,10 +170,7 @@ class TweetsController < ApplicationController
   def update_tweets(tweets)
     client = get_twitter_client
 
-    tweet_ids = tweets.map do |tweet|
-      tweet.twitter_id
-    end
-    tweet_ids = tweet_ids.join(",")
+    tweet_ids = tweets.map { |tweet| tweet.twitter_id }.join(",")
     request_options = {id: tweet_ids}
     twitter_request = Twitter::REST::Request.new(client, :get, "1.1/statuses/lookup.json",  request_options)
     updated_tweet_data = twitter_request.perform
@@ -186,11 +183,7 @@ class TweetsController < ApplicationController
         users_followers: tweet_info[:user][:followers_count],
         favorite_count: tweet_info[:favorite_count]
       })
-      if tweet_to_update.email_sent == false
-        if tweet_info[:user][:followers_count] >= 15000 || tweet_info[:retweet_count] >= 5 || tweet_info[:favorite_count] >= 15
-          UserMailer.important_email(tweet_to_update).deliver_now
-        end
-      end
+      tweet_to_update.email_if_needed
     end
   end
 

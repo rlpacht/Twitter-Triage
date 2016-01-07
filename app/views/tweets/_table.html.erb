@@ -17,10 +17,10 @@
         <%= link_to "Favorite Count", { action: @action, params: {page: 1, order: :favorite_count}}%>
       </th>
       <th>
-        Age
+        <%= link_to "Age", { action: @action, params: {page: 1, order: :tweet_date}}%>
       </th>
       <th>
-        <%= link_to "Created On", { action: "index", params: {page: @page, order: :tweet_date}}%>
+        <%= link_to "Created On", { action: @action, params: {page: 1, order: :tweet_date}}%>
       </th>
       <th>
         Reply
@@ -64,7 +64,6 @@
 
       <td class="tweet-reply-controls">
 
-        <!-- Single button -->
         <div class="btn-group">
           <button type="button" class="btn btn-default dropdown-toggle fa fa-reply" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
             <span class="caret"></span>
