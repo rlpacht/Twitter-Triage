@@ -7,6 +7,7 @@ class Tweet < ActiveRecord::Base
   # hasn't already been emailed, and its metrics are
   # sufficiently high
   def email_if_needed
+    binding.pry
     if !email_sent
       if users_followers >= 15000 || retweet_count >= 5 || favorite_count >= 15
         UserMailer.important_email(self).deliver_now
@@ -157,7 +158,7 @@ class Tweet < ActiveRecord::Base
   def self.is_tweet_valid?(tweet_data)
     tweet_text = tweet_data[:text]
     return Tweet.unique_text_and_id?(tweet_data) &&
-      !Tweet.contains_blacklist?(tweet_text, ["deal", "offer", "ebay", "charitable", "hospital", "donation", "grant"]) &&
+      !Tweet.contains_blacklist?(tweet_text, ["deal", "offer", "ebay", "charitable", "hospital", "donation", "grant", "educational", "make a wish"]) &&
       !Tweet.is_tweet_melange?(tweet_data) &&
       !Tweet.is_user_blacklisted?(tweet_data)
   end
