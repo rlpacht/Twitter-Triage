@@ -7,7 +7,6 @@ class Tweet < ActiveRecord::Base
   # hasn't already been emailed, and its metrics are
   # sufficiently high
   def email_if_needed
-    binding.pry
     if !email_sent
       if users_followers >= 15000 || retweet_count >= 5 || favorite_count >= 15
         UserMailer.important_email(self).deliver_now
