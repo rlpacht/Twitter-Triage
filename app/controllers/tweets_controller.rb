@@ -113,7 +113,8 @@ class TweetsController < ApplicationController
   def index
     @page = params[:page]
     @order = params[:order] || :tweet_date
-    @tweets = Tweet.pending.order("#{@order} DESC NULLS LAST").page(@page)
+    @per_page = params[:per_page] || 25
+    @tweets = Tweet.pending.order("#{@order} DESC NULLS LAST").page(@page).per(@per_page  )
     update_tweets(@tweets)
     @action = "index"
     render :index

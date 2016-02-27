@@ -8,19 +8,19 @@
         User
       </th>
       <th>
-        <%= link_to "Number of Followers", { action: @action, params: {page: 1, order: :users_followers}}%>
+        <%= link_to "Number of Followers", { action: @action, params: {page: 1, order: :users_followers, per_page: 25}}%>
       </th>
       <th>
-        <%= link_to "Retweet Count", { action: @action, params: {page: 1, order: :retweet_count}}%>
+        <%= link_to "Retweet Count", { action: @action, params: {page: 1, order: :retweet_count, per_page: 25}}%>
       </th>
       <th>
-        <%= link_to "Favorite Count", { action: @action, params: {page: 1, order: :favorite_count}}%>
+        <%= link_to "Favorite Count", { action: @action, params: {page: 1, order: :favorite_count, per_page: 25}}%>
       </th>
       <th>
-        <%= link_to "Age", { action: @action, params: {page: 1, order: :tweet_date}}%>
+        <%= link_to "Age", { action: @action, params: {page: 1, order: :tweet_date, per_page: 25}}%>
       </th>
       <th>
-        <%= link_to "Created On", { action: @action, params: {page: 1, order: :tweet_date}}%>
+        <%= link_to "Created On", { action: @action, params: {page: 1, order: :tweet_date, per_page: 25}}%>
       </th>
       <th>
         Reply
@@ -39,12 +39,12 @@
   <% @tweets.each_with_index do |tweet, index| %>
     <tr class="table-row">
       <td class="tweet-link">
-        <%=link_to tweet.tweet_text, tweet.source_url, :target => "_blank" %>
+        <%=link_to highlight(tweet.tweet_text, Tweet::SEARCH_KEYWORDS, {:highlighter => '<strong>\1</strong>'}), tweet.source_url, :target => "_blank" %>
       </td>
       <td class="tweet-user-data">
         <%=link_to tweet.user, tweet.user_source, :target => "_blank" %>
         <br>
-        <%= link_to "X", { action: "blacklist_user", id: tweet.id, params: {page: @page, order: @order, user: tweet.user}}, {class: "blacklist-user-btn btn-xs"}%>
+        <%= link_to "X", { action: "blacklist_user", id: tweet.id, params: {page: @page, order: @order, user: tweet.user, per_page: 25}}, {class: "blacklist-user-btn btn-xs"}%>
       </td>
       <td class="tweet-user-followers">
         <%= number_with_delimiter(tweet.users_followers, :delimiter => ',') %>
