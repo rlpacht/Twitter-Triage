@@ -139,10 +139,16 @@ class Tweet < ActiveRecord::Base
 
   def self.top_ranked
     all_pending = Tweet.pending
-    newest_tweets = all_pending.order("#{:tweet_date} DESC NULLS LAST").limit(100)
-    most_followers = all_pending.order("#{:users_followers} DESC NULLS LAST").limit(100)
+    limit = 100
+    newest_tweets = all_pending.order("#{:tweet_date} DESC NULLS LAST").limit(limit)
+    most_followers = all_pending.order("#{:users_followers} DESC NULLS LAST").limit(limit)
+    most_favorites = all_pending.order("#{:favorite_count} DESC NULLS LAST").limit(limit)
+    most_retweets = all_pending.order("#{:retweet_count} DESC NULLS LAST").limit(limit)
 
-    top_tweets = newest_tweets.concat(most_followers)
+    top_tweets = newest_tweets
+      .concat(most_followers)
+      .concat(most_favorites)
+      .concat(most_retweets)
     return top_tweets.sort_by { |tweet| -tweet.score }
   end
 
