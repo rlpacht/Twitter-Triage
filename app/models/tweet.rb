@@ -149,6 +149,7 @@ class Tweet < ActiveRecord::Base
       .concat(most_followers)
       .concat(most_favorites)
       .concat(most_retweets)
+      .uniq
     return top_tweets.sort_by { |tweet| -tweet.score }
   end
 
