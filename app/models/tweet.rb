@@ -134,7 +134,7 @@ class Tweet < ActiveRecord::Base
   #   return URI.encode("Snap a selfie with http://melange.com and we'll mix custom foundation to perfectly match your skin! Try it for free!")
   # end
   def score
-    users_followers/(age_in_seconds + 1.0)
+    (users_followers + favorite_count + retweet_count)/(age_in_seconds + 1.0)
   end
 
   def self.top_ranked
@@ -143,7 +143,7 @@ class Tweet < ActiveRecord::Base
     most_followers = all_pending.order("#{:users_followers} DESC NULLS LAST").limit(100)
 
     top_tweets = newest_tweets.concat(most_followers)
-    return top_tweets.sort_by { |tweet| tweet.score }
+    return top_tweets.sort_by { |tweet| -tweet.score }
   end
 
   def self.pending

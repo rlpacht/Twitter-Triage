@@ -115,8 +115,7 @@ class TweetsController < ApplicationController
     @order = params[:order] || :tweet_date
     @per_page = params[:per_page] || 25
     # @tweets = Tweet.pending.order("#{@order} DESC NULLS LAST").page(@page).per(@per_page  )
-    @tweets = Tweet.top_ranked[0...25]
-    # Tweet.top_ranked
+    @tweets = Kaminari.paginate_array(Tweet.top_ranked).page(@page).per(@per_page)
     update_tweets(@tweets)
     @action = "index"
     render :index
