@@ -21,10 +21,6 @@ body, html {
   padding: 0px;
 }
 
-strong {
-  color: black;
-}
-
 .nav-buttons {
   display: inline-flex;
   margin-left: .5%;
