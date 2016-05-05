@@ -1,5 +1,5 @@
 class UserMailer < ApplicationMailer
-  default from: "rl.pacht@gmail.com"
+  default from: "philpee2@gmail.com"
 
   def important_email(tweet)
     tweet.update({email_sent: true})

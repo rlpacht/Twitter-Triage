@@ -72,6 +72,86 @@ class Tweet < ActiveRecord::Base
     "concealer orange",
     "concealer struggle"
   ]
+
+  GRAY_LIST = [
+    "dark circles",
+    "mood",
+    "product review",
+    "lipstick",
+    "lips",
+    "lip",
+    "lipgloss",
+    "blush",
+    "bitch",
+    "bitches",
+    "ladies",
+    "girls",
+    "$",
+    ":",
+    "|",
+    "she",
+    "he",
+    "girl",
+    "her",
+    "him",
+    "his",
+    "tip",
+    "tips",
+    "eyeliner",
+    "eyeshadow",
+    "eyes",
+    "eye",
+    "under eye circles",
+    "mascara",
+    "winged line",
+    "lashes",
+    "brow",
+    "brows",
+    "eyebrow",
+    "eyebrows",
+    "hair",
+    "curls",
+    "wash",
+    "washes",
+    "washing",
+    "take off",
+    "nail",
+    "nails",
+    "sleep",
+    "bed",
+    "brush",
+    "brushes",
+    "pencil",
+    "pencils",
+    "outfit",
+    "clothes",
+    "clothing",
+    "shirt",
+    "smokey",
+    "smoky",
+    "blog post",
+    "table light",
+    "ring light",
+    "glitter",
+    "glitters",
+    "shoe",
+    "shoes",
+    "heels",
+    "pimple",
+    "pimples",
+    "spot",
+    "spots",
+    "purple",
+    "Mary Kay",
+    "goth",
+    "NEW",
+    "@YouTube",
+    "CLinton",
+    "@WhiteHouse",
+    "finally",
+    "obsessed",
+    "love"
+  ]
   # Send an email with this tweet's data if this tweet
   # hasn't already been emailed, and its metrics are
   # sufficiently high
@@ -134,7 +214,13 @@ class Tweet < ActiveRecord::Base
   #   return URI.encode("Snap a selfie with http://melange.com and we'll mix custom foundation to perfectly match your skin! Try it for free!")
   # end
   def score
-    (users_followers + favorite_count + retweet_count)/(age_in_seconds + 1.0)
+    tweet_score = (users_followers + favorite_count + retweet_count)/(age_in_seconds + 1.0)
+    Tweet::GRAY_LIST.each do |gray_word|
+      if tweet_text.include?(gray_word)
+        tweet_score *= 0.02
+      end
+    end
+    return tweet_score
   end
 
   def self.top_ranked
