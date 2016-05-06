@@ -215,6 +215,7 @@ class Tweet < ActiveRecord::Base
   # end
   def score
     tweet_score = (Math::E**(-age_in_seconds()/100000)) * ((retweet_count + 1)**(2/3)) * (users_followers + 1) * (favorite_count ** (1/3) + 1)
+    # 0.1 **(country) 0 = english speaking 1 = non english
     # tweet_score = (users_followers + favorite_count + retweet_count)/(age_in_seconds + 1.0)
     num_gray_list_words = 0
     Tweet::GRAY_LIST.each do |gray_word|
