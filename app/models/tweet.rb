@@ -214,7 +214,7 @@ class Tweet < ActiveRecord::Base
   #   return URI.encode("Snap a selfie with http://melange.com and we'll mix custom foundation to perfectly match your skin! Try it for free!")
   # end
   def score
-    tweet_score = (Math::E**(-age_in_seconds()/100000)) * (retweet_count) * (users_followers) * (favorite_count ** (1/3))
+    tweet_score = (Math::E**(-age_in_seconds()/100000)) * (retweet_count + 1) * (users_followers + 1) * (favorite_count ** (1/3) + 1)
     # tweet_score = (users_followers + favorite_count + retweet_count)/(age_in_seconds + 1.0)
     num_gray_list_words = 0
     Tweet::GRAY_LIST.each do |gray_word|
