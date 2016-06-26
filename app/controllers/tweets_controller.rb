@@ -13,6 +13,8 @@ class TweetsController < ApplicationController
 
   protect_from_forgery :except => :create
 
+  before_action :authenticate_user!
+
   @@keywords = [
       [
         '"makeup color"',
