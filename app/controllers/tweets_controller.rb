@@ -1,6 +1,4 @@
 require "rubygems"
-require "google/api_client"
-require "google_drive"
 require 'openssl'
 require 'twitter'
 require 'twitter/rest/request'

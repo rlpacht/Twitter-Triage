@@ -22,10 +22,6 @@ gem 'jbuilder', '~> 2.0'
 # bundle exec rake doc:rails generates the API under doc/api.
 gem 'sdoc', '~> 0.4.0', group: :doc
 
-gem 'google-api-client', '<0.9'
-
-gem 'google_drive' ,'1.0'
-
 gem 'twitter', '5.15'
 
 gem 'httparty'
@@ -35,7 +31,7 @@ gem "figaro"
 gem 'kaminari'
 
 gem 'bootstrap-kaminari-views'
-# gem 'google-drive'
+
 # Use ActiveModel has_secure_password
 # gem 'bcrypt', '~> 3.1.7'
 
