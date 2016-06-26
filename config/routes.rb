@@ -1,6 +1,5 @@
 Rails.application.routes.draw do
 
-  devise_for :users
   get "/", to: "tweets#index"
 
   get "tweets/fetch_tweets", to: "tweets#fetch_tweets"
@@ -22,6 +21,4 @@ Rails.application.routes.draw do
   post "tweets", to: "tweets#create"
 
   post "blacklists", to: "blacklists#create"
-
-  root to: "tweets#index"
 end
